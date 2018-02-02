@@ -1,13 +1,28 @@
 package com.example.xushuailong.mygrocerystore;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.xushuailong.mygrocerystore.base.BaseActivity;
+
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected int getlayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void loadData() {
+
     }
 }
