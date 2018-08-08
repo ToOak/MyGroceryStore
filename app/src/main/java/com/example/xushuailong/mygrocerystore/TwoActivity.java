@@ -30,10 +30,10 @@ public class TwoActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        et_bg =  findViewById(R.id.et_bg);
-        et_content =  findViewById(R.id.et_content);
-        fl =  findViewById(R.id.fl);
-        back =  findViewById(R.id.iv_arrow);
+        et_bg = findViewById(R.id.et_bg);
+        et_content = findViewById(R.id.et_content);
+        fl = findViewById(R.id.fl);
+        back = findViewById(R.id.iv_arrow);
         tv_search = findViewById(R.id.search_btn);
 
         et_bg.setOnClickListener(new View.OnClickListener() {

@@ -1,5 +1,6 @@
 package com.example.xushuailong.mygrocerystore.utils;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -13,6 +14,7 @@ public class LogUtil {
     private LogUtil() {
     }
 
+    @SuppressLint("DefaultLocale")
     private static String generateTag() {
         StackTraceElement caller = new Throwable().getStackTrace()[2];
         String tag = "%s.%s(L:%d)";
