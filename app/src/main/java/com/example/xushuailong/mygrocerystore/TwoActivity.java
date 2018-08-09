@@ -12,29 +12,37 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import com.example.xushuailong.mygrocerystore.databinding.ActivityTwoBinding;
+
 import com.example.xushuailong.mygrocerystore.base.BaseActivity;
 
 /**
  * Created by xushuailong on 2018/2/9.
  */
 
-public class TwoActivity extends BaseActivity {
+public class TwoActivity extends BaseActivity<ActivityTwoBinding> {
 
+    private boolean finishing;
     private TextView et_bg;
     private TextView et_content;
     private ImageView back;
     private TextView tv_search;
     private FrameLayout fl;
-    private boolean finishing;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        et_bg = findViewById(R.id.et_bg);
-        et_content = findViewById(R.id.et_content);
-        fl = findViewById(R.id.fl);
-        back = findViewById(R.id.iv_arrow);
-        tv_search = findViewById(R.id.search_btn);
+    protected int getLayoutId() {
+        return R.layout.activity_two;
+    }
+
+
+    @Override
+    protected void initView() {
+        et_bg = dataBinding.etBg;
+        et_content = dataBinding.etContent;
+        back = dataBinding.ivArrow;
+        tv_search = dataBinding.searchBtn;
+        fl = dataBinding.fl;
 
         et_bg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +62,10 @@ public class TwoActivity extends BaseActivity {
                 inAnimation();
             }
         });
+    }
+
+    @Override
+    protected void loadData() {
 
     }
 
@@ -188,18 +200,4 @@ public class TwoActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected int getlayoutId() {
-        return R.layout.activity_two;
-    }
-
-    @Override
-    protected void initView() {
-
-    }
-
-    @Override
-    protected void loadData() {
-
-    }
 }

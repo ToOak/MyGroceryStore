@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ViewStub
-        android:id="@+id/content_view_vs"
+    <FrameLayout
+        android:id="@+id/comment_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

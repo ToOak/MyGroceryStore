@@ -1,65 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout>
 
-    <FrameLayout
+    <data>
+
+        <variable
+            name="user"
+            type="com.example.xushuailong.mygrocerystore.bean.User" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@android:color/holo_blue_light">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_gravity="top"
-            android:gravity="bottom"
-            android:paddingLeft="15dp"
-            android:text="Title"
-            android:textColor="@android:color/white" />
+            android:layout_height="150dp"
+            android:background="@android:color/holo_blue_light">
 
-        <TextView
-            android:id="@+id/tv_main"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@android:color/background_light"
-            android:textColor="@android:color/white"
-            android:transitionName="shareTransition" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="top"
+                android:gravity="bottom"
+                android:paddingLeft="15dp"
+                android:text="Title"
+                android:textColor="@android:color/white" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="请输入搜索内容"
-            android:textColor="@android:color/black"
-            android:transitionName="shareTransition" />
+            <TextView
+                android:id="@+id/main_tv"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@android:color/background_light"
+                android:textColor="@android:color/white"
+                android:transitionName="shareTransition" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_gravity="bottom"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:text="我是无关文字"
-            android:textColor="@android:color/white" />
-    </FrameLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="请输入搜索内容"
+                android:textColor="@android:color/black"
+                android:transitionName="shareTransition" />
 
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
+            <TextView
+                android:id="@+id/set_user_tv"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="设置用户信息"
+                android:textColor="@android:color/white" />
+        </FrameLayout>
 
-    <ImageView
-        android:id="@+id/img1"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
-</LinearLayout>
+
+        <LinearLayout style="@style/horizontalItem">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="姓名：" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{user.name}" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/horizontalItem">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昵称：" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{user.nickName??user.name}" />
+            <!--"@{user.nickname == null ? user.name : user.nickname}"-->
+        </LinearLayout>
+
+        <LinearLayout style="@style/horizontalItem">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="性别：" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{user.male?@string/male:@string/female}"
+                android:textColor="@{user.male?0xff0000ff:0xffff0000}" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/horizontalItem">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="年龄：" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{String.valueOf(user.age)+" years old"}'
+                android:textColor="@{user.age &lt; 14 || user.age &gt; 65?0xffff0000:0xff000000}" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
