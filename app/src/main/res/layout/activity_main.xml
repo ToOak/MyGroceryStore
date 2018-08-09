@@ -48,15 +48,42 @@
                 android:textColor="@android:color/black"
                 android:transitionName="shareTransition" />
 
-            <TextView
-                android:id="@+id/set_user_tv"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_gravity="bottom"
-                android:gravity="center_vertical"
-                android:paddingLeft="15dp"
-                android:text="设置用户信息"
-                android:textColor="@android:color/white" />
+            <LinearLayout
+                style="@style/horizontalItem"
+                android:layout_gravity="bottom">
+
+                <Button
+                    android:id="@+id/one_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="6dp"
+                    android:text="数据1" />
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent" />
+
+                <Button
+                    android:id="@+id/two_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="6dp"
+                    android:text="数据2" />
+
+                <View
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent" />
+
+                <Button
+                    android:id="@+id/three_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="6dp"
+                    android:text="清除数据" />
+            </LinearLayout>
         </FrameLayout>
 
 

@@ -49,11 +49,11 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends Activity {
     }
 
     private void initBindingLayout() {
-        ViewGroup rootView = (ViewGroup) mInflater.inflate(R.layout.comment_layout,null);
+        ViewGroup rootView = (ViewGroup) mInflater.inflate(R.layout.comment_layout, null);
         FrameLayout contentView = rootView.findViewById(R.id.comment_content);
         int contentResId = getLayoutId();
-        if (contentResId != 0){
-            dataBinding = DataBindingUtil.inflate(mInflater,contentResId,contentView,true);
+        if (contentResId != 0) {
+            dataBinding = DataBindingUtil.inflate(mInflater, contentResId, contentView, true);
         }
 
         setContentView(rootView);

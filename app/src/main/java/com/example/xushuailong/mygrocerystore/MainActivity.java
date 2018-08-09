@@ -20,7 +20,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     protected void initView() {
 
 
-
 //        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 //        findViewById(R.id.img).setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -30,11 +29,24 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 //            }
 //        });
 
-        dataBinding.setUserTv.setOnClickListener(new View.OnClickListener() {
+        dataBinding.oneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user = new User("张君宝", "张三丰", true, 30);
+                User user = new User("张君宝", "张三丰", true, 16);
                 dataBinding.setUser(user);
+            }
+        });
+        dataBinding.twoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = new User("郭襄", "襄儿", false, 12);
+                dataBinding.setUser(user);
+            }
+        });
+        dataBinding.threeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dataBinding.setUser(null);
             }
         });
 
