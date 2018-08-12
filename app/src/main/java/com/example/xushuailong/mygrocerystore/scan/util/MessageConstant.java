@@ -12,7 +12,6 @@ public interface MessageConstant {
 
     int SleepDown = BASE_MSG + 15;
 
-    int SET_ZOOM = BASE_MSG + 20;
 
     public static interface BarcodeDecodeMsg {
         int AUTOFOCUS = BASE_MSG + 200;// auto_focus

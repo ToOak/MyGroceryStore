@@ -192,9 +192,6 @@ public class CameraManager {
             getScreenResolution();
         }
         setCameraParameters();
-        //相机打开之后，发消息通知seekBar初始化一些值，如currentZoom、maxZoom
-        HardWare.sendMessage(BarcodeScanActivity.getMainHandler(), MessageConstant.SET_ZOOM, getCurrentZoom(), getMaxZoom());
-//        HardWare.sendMessage(BarcodeScan2Activity.getMainHandler(), MessageConstant.SET_ZOOM, getCurrentZoom(), getMaxZoom());
     }
 
     public void closeDriver() {
@@ -369,42 +366,15 @@ public class CameraManager {
         double xScale = ((double) cameraResolution.x) / ((double) screenResolution.x);
         double yScale = ((double) cameraResolution.y) / ((double) screenResolution.y);
 
-//        if (!HardWare.needRotateActivity()) {
             return new Rect(((int) (screenRect.left * yScale) / 2) * 2,
                     ((int) (screenRect.top * xScale) / 2) * 2,
                     ((int) (screenRect.right * yScale) / 2) * 2,
                     ((int) (screenRect.bottom * xScale) / 2) * 2);
-//        } else {
-//            return new Rect(((int) (screenRect.left * xScale) / 2) * 2,
-//                    ((int) (screenRect.top * yScale) / 2) * 2,
-//                    ((int) (screenRect.right * xScale) / 2) * 2,
-//                    ((int) (screenRect.bottom * yScale) / 2) * 2);
-//        }
     }
 
     private void rectCameraRotate() {
         if (rectCameraRotate == null) {
 
-//            if (isPartCamera){
-//                int height = MetricUtil.dip2pix(app, viewHeight);
-//                int cameraHeight = MetricUtil.dip2pix(app, scanViewHeight);
-//                int screenWidth = screenResolution.y;
-//                int screenHeight = screenResolution.x;
-//                int cameraLeft;
-//                int cameraTop;
-//                int cameraRight;
-//                int cameraBottom;
-//
-////            cameraLeft = (int) (screenWidth * 0.1);
-////            cameraTop = (int) (screenHeight - height / 2 - cameraHeight / 2 * 0.9);
-////            cameraRight = (int) (screenWidth * 0.9);
-////            cameraBottom = (int) (screenHeight - (height / 2 - cameraHeight / 2 + cameraHeight / 2 * 0.1));
-//                cameraLeft = 0;
-//                cameraTop = screenHeight - ((height - cameraHeight) / 2 + cameraHeight);
-//                cameraRight = screenWidth;
-//                cameraBottom = screenHeight - (height - cameraHeight) / 2;
-//                rectCameraRotate = new Rect(cameraLeft, cameraTop, cameraRight, cameraBottom);
-//            }else {
 
             int leftOffset, topOffset;
             int width, height;
@@ -434,36 +404,6 @@ public class CameraManager {
             editor.putInt("camera_rotate_bottom", rectCameraRotate.bottom);
             editor.commit();
 
-//            }
-//            int leftOffset, topOffset;
-//            int width, height;
-//
-//            width = screenResolution.y - MetricUtil.dip2pix(app,30); //540
-//            height = width; //351
-//
-//            topOffset = (screenResolution.x - height) / 2;//304
-//            if (topOffset < 0) { //need reset ScreenScale, update init datas
-//                int x = screenResolution.x;
-//                int y = screenResolution.y;
-//                screenResolution.x = y;
-//                screenResolution.y = x;
-//                width = screenResolution.y;
-//                height = (int) (width * 0.65f);
-//                topOffset = (screenResolution.x - height) / 2;
-//            }
-//            leftOffset = (screenResolution.y - width) / 2;
-//
-//            rectCameraRotate = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
-//
-//            SharedPreferences sharepre = PreferenceManager.getDefaultSharedPreferences(app);
-//            Editor editor = sharepre.edit();
-//            editor.putInt("camera_rotate_left", rectCameraRotate.left);
-//            editor.putInt("camera_rotate_top", rectCameraRotate.top);
-//            editor.putInt("camera_rotate_right", rectCameraRotate.right);
-//            editor.putInt("camera_rotate_bottom", rectCameraRotate.bottom);
-//            editor.commit();
-//
-//
         }
     }
 
@@ -478,17 +418,12 @@ public class CameraManager {
             int cameraRight;
             int cameraBottom;
 
-//            cameraLeft = (int) (screenWidth * 0.1);
-//            cameraTop = (int) (screenHeight - height / 2 - cameraHeight / 2 * 0.9);
-//            cameraRight = (int) (screenWidth * 0.9);
-//            cameraBottom = (int) (screenHeight - (height / 2 - cameraHeight / 2 + cameraHeight / 2 * 0.1));
             cameraLeft = 0;
             cameraTop = screenHeight - ((height - cameraHeight) / 2 + cameraHeight);
             cameraRight = screenWidth;
             cameraBottom = screenHeight - (height - cameraHeight) / 2;
             rectPartCameraRotate = new Rect(cameraLeft, cameraTop, cameraRight, cameraBottom);
 
-//            WccLogger.e("camerascan", "CameraManager " + cameraLeft + " .... " + cameraTop + ". .. " + cameraRight + " ... " + cameraBottom);
         }
     }
 
@@ -512,6 +447,15 @@ public class CameraManager {
             topOffset = (screenResolution.y - height) / 2;
 
             rectActivityRotate = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
+
+
+
+//            frameRect.left = (int) (w * 0.15);
+//            frameRect.top = (int) ((h - (w * 0.7)) / 2);
+//            frameRect.right = w - frameRect.left;
+//            frameRect.bottom = h - frameRect.top;
+
+
 
             SharedPreferences sharepre = PreferenceManager.getDefaultSharedPreferences(app);
             Editor editor = sharepre.edit();
@@ -719,9 +663,6 @@ public class CameraManager {
         return result;
     }
 
-    public boolean isAutoFocus() {
-        return isAF;
-    }
 
     // 0: CAMERA_FACING_BACK
     // 1: CAMERA_FACING_FRONT
@@ -758,54 +699,5 @@ public class CameraManager {
         }
     }
 
-
-    public void setSmoothZoom(int zoomVlaue) {
-        if (camera != null) {
-            Parameters parameters = camera.getParameters();
-            if (!parameters.isZoomSupported()) {
-                return;
-            }
-            int maxZoom = parameters.getMaxZoom();
-            if (parameters.isSmoothZoomSupported()) {
-                if (zoomVlaue <= maxZoom) {
-                    camera.startSmoothZoom(zoomVlaue);
-                }
-            } else {
-                if (zoomVlaue <= maxZoom) {
-                    parameters.setZoom(zoomVlaue);
-                }
-            }
-
-            camera.setParameters(parameters);
-        }
-    }
-
-    /**
-     * 获取当前zoom
-     *
-     * @return
-     */
-    public int getCurrentZoom() {
-        int currentZoom = 0;
-        if (camera != null) {
-            Parameters parameters = camera.getParameters();
-            currentZoom = parameters.getZoom();
-        }
-        return currentZoom;
-    }
-
-    /**
-     * 获取最大zoom
-     *
-     * @return
-     */
-    public int getMaxZoom() {
-        int maxZoom = 0;
-        if (camera != null) {
-            Parameters parameters = camera.getParameters();
-            maxZoom = parameters.getMaxZoom();
-        }
-        return maxZoom;
-    }
 
 }

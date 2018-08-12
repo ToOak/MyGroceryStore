@@ -43,10 +43,8 @@ import com.wochacha.scan.WccResult;
 
 public final class BarcodeScanActivity extends AppCompatActivity {
     private final String SCAN = ScanFragment.class.getName();
-    private static final String KEY_CAMERA_ZOOM = "key_camera_zoom";
     public static final String KEY_FOCUS_TYPE = "key_focus_type";
 
-    private WccScanApplication app;
     private ImageView imgSwitchFlash;
     private ImageView imgCancel;
 
@@ -59,15 +57,11 @@ public final class BarcodeScanActivity extends AppCompatActivity {
 
     private boolean flashOnOff = false;
 
-    private SeekBar seekBarZoom;
-
-    private boolean isRequesting = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        app = (WccScanApplication) getApplication();
         flashOnOff = false;
 
 
@@ -103,53 +97,19 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                                 /**
                                  * 扫描后进入业务逻辑界面
                                  */
-                                if (!WccBarcode.rainbowOnly) {
-                                    if (barType == 128) {
-                                        if (Validator.isEffective(barcode)) {
-                                            //TODO
-//                                            HybridUtil.startHybridActivity(BarcodeScanActivity.this, JCConstant.HOST_WEBVIEW + "signfor?" + "logistics_code=" + barcode
-//                                                    + "&staff_id=" + SpUtil.getString(BarcodeScanActivity.this, "STAFF_ID", "")
-//                                                    + "&store_id=" + SpUtil.getString(BarcodeScanActivity.this, "STORE_ID", "")
-//                                                    + "&udid=" + CommonUtil.getUdid(BarcodeScanActivity.this)
-//                                                    + "&token=" + SpUtil.getToken(BarcodeScanActivity.this)
-//                                                    + "&h5title=" + DataConverterUtil.urlEncode("入库确认"));
-                                        } else {
-//                                            HardWare.ToastShort(BarcodeScanActivity.this, "未能识别出物流码，请重新扫描！");
-                                        }
-                                    } else {
-//                                        HardWare.ToastShort(BarcodeScanActivity.this, "请扫描物流码！");
-                                    }
 
-                                }
                                 TextView textView = findViewById(R.id.txt);
                                 ImageView imageView = findViewById(R.id.img);
                                 textView.setText(new String(res.result));
                                 Log.e("xsl", "bitmap: " + result.bitmap.getWidth() + "\t" + result.bitmap.getHeight());
                                 imageView.setImageBitmap(result.bitmap);
 
-                            } else {
-                                if (WccBarcode.rainbowOnly) {
-                                    if (barType == 13 && Validator.isEffective(colorCode) && !"0".equals(colorCode)) {
-                                        if (!isRequesting && Validator.isEffective(barcode) && Validator.isEffective(colorCode)) {
-                                            isRequesting = true;
-                                        } else {
-//                                            HardWare.ToastShort(BarcodeScanActivity.this, "未能识别出彩虹码，请重新扫描！");
-                                        }
-                                    } else {
-//                                        HardWare.ToastShort(BarcodeScanActivity.this, "请扫描彩虹码！");
-                                    }
-
-                                }
-                                HardWare.sendMessageDelayed(ScanFragment.captureHandler, BarcodeDecodeMsg.RestartPreviewAndDecode, 1500);
                             }
                             break;
 
                         case MessageConstant.BarcodeDecodeMsg.FlashOn:
                             flashOnOff = true;
                             setFlashImage();
-                            break;
-                        case MessageConstant.SET_ZOOM:
-                            setSeekBar(seekBarZoom, msg.arg1, msg.arg2);
                             break;
                         default:
                             break;
@@ -201,8 +161,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
 
     private void initScanView() {
 
-
-
         setContentView(R.layout.barcodescan_portrait);
         bmp_flashOn = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_flash_on);
         bmp_flashOff = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_flash_off);//此按钮改为了手输图标
@@ -210,9 +168,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
 
         imgSwitchFlash = findViewById(R.id.img_switchflash);
         imgCancel = findViewById(R.id.img_cancel);
-//        imgColor = findViewById(R.id.img_color);
-        seekBarZoom = findViewById(R.id.seekBar_zoom);
-
 
         imgCancel.setImageBitmap(bmp_cancel);
 
@@ -331,12 +286,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStop() {
-        // TODO Auto-generated method stub
-        super.onStop();
-    }
-
     protected void onDestroy() {
         HardWare.releaseMediaPlayer();
         mainhandler = null;
@@ -383,42 +332,4 @@ public final class BarcodeScanActivity extends AppCompatActivity {
         return mainhandler;
     }
 
-    /**
-     * 设置平滑调节zoom控件
-     *
-     * @param seekBarZoom
-     */
-    public void setSeekBar(final SeekBar seekBarZoom, final int currentZoom, final int maxZoom) {
-        seekBarZoom.setMax(maxZoom);//最大的zoom
-        final int spZoom = SpUtil.getInt(app, KEY_CAMERA_ZOOM, -1);
-        if (spZoom != -1) {
-            seekBarZoom.setProgress(spZoom);
-            mainhandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    CameraManager.getInstance(app).setSmoothZoom(spZoom);
-                }
-            }, 300);
-
-        } else {
-            seekBarZoom.setProgress(currentZoom);//获取当前camera的真实zoom来显示
-        }
-        seekBarZoom.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // 测试zoom调节
-                CameraManager.getInstance(app).setSmoothZoom(progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                SpUtil.putInt(app, KEY_CAMERA_ZOOM, seekBar.getProgress());
-            }
-        });
-    }
 }

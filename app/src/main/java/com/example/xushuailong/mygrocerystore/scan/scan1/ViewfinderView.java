@@ -9,15 +9,12 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
-import com.example.xushuailong.mygrocerystore.scan.util.HardWare;
 import com.example.xushuailong.mygrocerystore.scan.util.WccConfigure;
 import com.example.xushuailong.mygrocerystore.R;
 public final class ViewfinderView extends View {
     private static final int[] SCANNER_ALPHA = {0, 64, 128, 192, 255, 192, 128, 64};
-    String TAG = "ViewfinderView";
     private int scannerAlpha;
     private static final long ANIMATION_DELAY = 1000L;
 
@@ -27,17 +24,12 @@ public final class ViewfinderView extends View {
     private int laserColor;
     private final int outRangeColor;
     private int stopDraw;
-    private int width;
-    private int height;
     private Rect frame;
-    private Rect line_v;
 
     private int m1;
     private int m2;
     private int m3;
     private int m4;
-    private int line_w;
-    private int pen = 4;
     int middle_v;
     int middle_h;
     float newHeight;
@@ -48,7 +40,6 @@ public final class ViewfinderView extends View {
     public Rect scanLine;
     private boolean colorOn = false;
     private Context con;
-    private int i = 0;
 
     //用于画弧的四个边界矩形
     private RectF leftTopRect, leftBottomRect, rightTopRect, rightBottomRect;
@@ -59,19 +50,13 @@ public final class ViewfinderView extends View {
 
         con = context;
         SharedPreferences sharepre = PreferenceManager.getDefaultSharedPreferences(context);
-//        if (!HardWare.needRotateActivity()) {
+
             int left = sharepre.getInt("camera_rotate_left", 0);
             int top = sharepre.getInt("camera_rotate_top", 0);
             int right = sharepre.getInt("camera_rotate_right", 0);
             int bottom = sharepre.getInt("camera_rotate_bottom", 0);
+
             frame = new Rect(left, top, right, bottom);
-//        } else {
-//            int left = sharepre.getInt("activity_rotate_left", 0);
-//            int top = sharepre.getInt("activity_rotate_top", 0);
-//            int right = sharepre.getInt("activity_rotate_right", 0);
-//            int bottom = sharepre.getInt("activity_rotate_bottom", 0);
-//            frame = new Rect(left, top, right, bottom);
-//        }
 
         paint = new Paint();
         box = new Rect();
@@ -89,7 +74,6 @@ public final class ViewfinderView extends View {
 
         stopDraw = 0;
 
-        line_v = new Rect();
 
         middle_v = frame.width() / 2 + frame.left;
         middle_h = frame.height() / 2 + frame.top;
@@ -128,25 +112,12 @@ public final class ViewfinderView extends View {
         if (frame == null)
             return;
 
-        width = canvas.getWidth();
-        height = canvas.getHeight();
+        int width = canvas.getWidth();
+        int height = canvas.getHeight();
 
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(maskColor);
 
-//        if (HardWare.needRotateActivity()) {
-//                if (colorOn || WccConfigure.getColorMode(con)) {
-//                    box.set(0, frame.top, m1, frame.bottom + 1);
-//                    canvas.drawRect(box, paint);
-//                    box.set(m3, frame.top, width, frame.bottom + 1);
-//                    canvas.drawRect(box, paint);
-//                } else {
-//                box.set(0, frame.top, frame.left, frame.bottom + 1);
-//                canvas.drawRect(box, paint);
-//                box.set(frame.right + 1, frame.top, width, frame.bottom + 1);
-//                canvas.drawRect(box, paint);
-//            }
-//        } else {
             if (colorOn || WccConfigure.getColorMode(con)) {
                 box.set(0, 0, width, m2);
                 canvas.drawRect(box, paint);
@@ -160,7 +131,7 @@ public final class ViewfinderView extends View {
             }
 //        }
 
-        line_w = width >> 4;
+        int line_w = width >> 4;
 
 
         paint.setColor(getResources().getColor(R.color.white));
