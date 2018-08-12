@@ -7,9 +7,7 @@ import android.util.Log;
 
 import com.example.xushuailong.mygrocerystore.scan.util.Constant;
 import com.example.xushuailong.mygrocerystore.scan.util.Constant.*;
-import com.example.xushuailong.mygrocerystore.scan.util.HardWare;
 import com.example.xushuailong.mygrocerystore.scan.util.Validator;
-import com.example.xushuailong.mygrocerystore.scan.util.WccConstant;
 import com.wochacha.scan.WccResult;
 
 import java.io.UnsupportedEncodingException;
@@ -68,7 +66,6 @@ public class DecodeResultProcessor {
      * @return the code or empty
      */
     public String process() {
-    	if (WccConstant.DEBUG) 	Log.e(TAG, "process");
     	if (result == null || hostAcitivty == null) return "";
     	String bmpName = result.bmpName;
     	switch(libType) {
@@ -95,8 +92,6 @@ public class DecodeResultProcessor {
      * @return the result or empty
      */
     public String process(String colorcode, String result, String format, String bmpName, int inputType) {
-	    if (WccConstant.DEBUG)
-	        Log.e(TAG, " result=" + result + ", format=" + format+ ", scanType=" + scanType);
 	    if(result == null || format == null || hostAcitivty == null) return "";
 	    
 	    //ExtFuncConfigInfo info =  DataProvider.getInstance(hostAcitivty).getExtFuncConfig();
@@ -168,19 +163,6 @@ public class DecodeResultProcessor {
 	    if (intent != null) {
 	        intent.putExtra(ScanResult.kScanResult, result);
 	        intent.putExtra(ScanResult.kRainbowResult, colorcode);
-	        if (WccConstant.DEBUG) {
-	        	if (Validator.isEffective(barcode) || Validator.isEffective(colorcode)) {
-	            	String outResult  = "";
-	            	if (Validator.isEffective(barcode)) {
-	            		outResult += "条码信息:" + barcode;
-	            	}
-	            	if (Validator.isEffective(colorcode)) {
-	            		outResult += "\n彩虹码信息:" + colorcode;
-	            	}
-	            	Log.e(TAG, outResult);
-	            	HardWare.ToastShort(hostAcitivty, outResult);
-	            }
-	        }
 	        intent.putExtra(ScanResult.kResultType, format);
 	        if (isImageScan)
 	        	intent.putExtra(Constant.KeyAction, Constant.RequireAction.Image);
@@ -197,8 +179,6 @@ public class DecodeResultProcessor {
 	        if (isFinish) {	        	
 	           hostAcitivty.finish();
 	        }
-	        if (WccConstant.DEBUG)
-	    		Log.e(TAG, "process end, isFinish = " + isFinish+", isJumpto =" + isJumpto);
 	    }
 	    return result;
     }
@@ -358,8 +338,6 @@ public class DecodeResultProcessor {
 	 
 	String handleDecodeExternally(Activity context, int whichLib, WccResult g_rawResult, Wcc2dResult g_2dResult, String bmpName) {
 		if (whichLib == ScanResult.DecodeFromGcUNI) { // gc_lib
-	        if (WccConstant.DEBUG)
-	            Log.d(TAG, "handleDecodeExternally->gclib");
 	        barcode = convertByteToString(g_rawResult.result);
 	        format = getBarcodeFormat(g_rawResult.type);
 	        colorcode = convertByteToString(g_rawResult.colorcode);
@@ -368,8 +346,6 @@ public class DecodeResultProcessor {
 //	        	colorcode = "";
 	    }
 		else if (whichLib == ScanResult.DecodeFromHcode) {// Eagle 20120814
-	        if (WccConstant.DEBUG)
-	            Log.d(TAG, "handleDecodeExternally->NEWLIB");
 	        barcode = g_2dResult.getResult();
 	        format = g_2dResult.getFormat();// Eagle 20120720
 	    }

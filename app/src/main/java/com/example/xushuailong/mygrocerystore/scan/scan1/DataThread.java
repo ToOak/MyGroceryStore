@@ -11,7 +11,6 @@ import com.example.xushuailong.mygrocerystore.scan.util.Constant.*;
 import com.example.xushuailong.mygrocerystore.scan.util.HardWare;
 import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant;
 import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant.*;
-import com.example.xushuailong.mygrocerystore.scan.util.WccConstant;
 import com.wochacha.scan.WccBarcode;
 
 @SuppressLint("HandlerLeak")
@@ -98,8 +97,6 @@ public class DataThread extends Thread {
             }
 
             Looper.prepare();
-            if (WccConstant.DEBUG)
-                Log.e(TAG, "create handler");
             handler = new Handler() {
                 @Override
                 public void handleMessage(Message msg) {
@@ -149,8 +146,6 @@ public class DataThread extends Thread {
                                 HardWare.sendMessage(Invokerhandler, BarcodeDecodeMsg.DecodeSuccess, msg.arg1, msg.arg2, msg.obj);
                                 break;
                             case BarcodeDecodeMsg.QUIT_DECODE:
-                                if (WccConstant.DEBUG)
-                                    Log.e(TAG, "BarcodeDecodeMsg.QUIT_DECODE");
                                 end();
                                 handler = null;
                                 Looper.myLooper().quit();

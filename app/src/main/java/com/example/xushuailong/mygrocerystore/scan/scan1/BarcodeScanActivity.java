@@ -33,7 +33,6 @@ import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant;
 import com.example.xushuailong.mygrocerystore.scan.util.SpUtil;
 import com.example.xushuailong.mygrocerystore.scan.util.Validator;
 import com.example.xushuailong.mygrocerystore.scan.util.WccConfigure;
-import com.example.xushuailong.mygrocerystore.scan.util.WccConstant;
 import com.wochacha.scan.WccBarcode;
 import com.wochacha.scan.WccResult;
 
@@ -43,7 +42,6 @@ import com.wochacha.scan.WccResult;
  */
 
 public final class BarcodeScanActivity extends AppCompatActivity {
-    public final static String TAG = "BarcodeScanActivity";
     private final String SCAN = ScanFragment.class.getName();
     private static final String KEY_CAMERA_ZOOM = "key_camera_zoom";
     public static final String KEY_FOCUS_TYPE = "key_focus_type";
@@ -51,30 +49,15 @@ public final class BarcodeScanActivity extends AppCompatActivity {
     private WccScanApplication app;
     private ImageView imgSwitchFlash;
     private ImageView imgCancel;
-    private ImageView imgScanImage;
-    private ImageView imgColor;
-    private ImageView imgOther;
-    private ImageView scan_info;
-    private ImageView color_scan_tip;
 
     private Bitmap bmp_flashOn;
     private Bitmap bmp_flashOff;
-    private Bitmap bmp_scan_info;
-    private Bitmap bmp_scan_tip;
-    private Bitmap bmp_input;
     private Bitmap bmp_cancel;
-    private Bitmap bmp_image_scan;
-    private Bitmap bmp_color_sel;
-    private Bitmap bmp_color_nor;
-    private Bitmap bmp_other;
     private static Handler mainhandler;
     private int scanType;
     private int focusType;
 
     private boolean flashOnOff = false;
-
-    private boolean colorOn = false;
-    private boolean hasColor = false;
 
     private SeekBar seekBarZoom;
 
@@ -83,8 +66,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         app = (WccScanApplication) getApplication();
         flashOnOff = false;
@@ -133,10 +114,10 @@ public final class BarcodeScanActivity extends AppCompatActivity {
 //                                                    + "&token=" + SpUtil.getToken(BarcodeScanActivity.this)
 //                                                    + "&h5title=" + DataConverterUtil.urlEncode("入库确认"));
                                         } else {
-                                            HardWare.ToastShort(BarcodeScanActivity.this, "未能识别出物流码，请重新扫描！");
+//                                            HardWare.ToastShort(BarcodeScanActivity.this, "未能识别出物流码，请重新扫描！");
                                         }
                                     } else {
-                                        HardWare.ToastShort(BarcodeScanActivity.this, "请扫描物流码！");
+//                                        HardWare.ToastShort(BarcodeScanActivity.this, "请扫描物流码！");
                                     }
 
                                 }
@@ -151,12 +132,11 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                                     if (barType == 13 && Validator.isEffective(colorCode) && !"0".equals(colorCode)) {
                                         if (!isRequesting && Validator.isEffective(barcode) && Validator.isEffective(colorCode)) {
                                             isRequesting = true;
-                                            requestGoodsInfo(barcode, colorCode);
                                         } else {
-                                            HardWare.ToastShort(BarcodeScanActivity.this, "未能识别出彩虹码，请重新扫描！");
+//                                            HardWare.ToastShort(BarcodeScanActivity.this, "未能识别出彩虹码，请重新扫描！");
                                         }
                                     } else {
-                                        HardWare.ToastShort(BarcodeScanActivity.this, "请扫描彩虹码！");
+//                                        HardWare.ToastShort(BarcodeScanActivity.this, "请扫描彩虹码！");
                                     }
 
                                 }
@@ -181,7 +161,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                 }
             }
         };
-
 
         processIntentData();
 
@@ -208,9 +187,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                 break;
         }
 
-        colorOn = false;
-        //WccConfigure.setColorMode(context, colorOn);
-
         remove(SCAN);
         initScanView();
         select(SCAN);
@@ -219,151 +195,32 @@ public final class BarcodeScanActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (WccConstant.DEBUG)
-            Log.e(TAG, "barcode scan onNewIntent");
         setIntent(intent);//must store the new intent unless getIntent() will return the old one
         processIntentData();
     }
 
     private void initScanView() {
-        //销售商品显示彩虹码标记
-        int resource_scan_info;
-        if (WccBarcode.rainbowOnly) {
-            resource_scan_info = R.drawable.icon_scan_color_info;
-        } else {
-            resource_scan_info = R.drawable.icon_scan_barcode_info;
-        }
 
 
-        if (colorOn)
-            resource_scan_info = R.drawable.icon_scan_color_info;
 
-        switch (scanType) {
-            case ScanType.CONTINUOUS_SCHEDULE:
-                resource_scan_info = R.drawable.icon_scan_info_to_stockshedule;
-                break;
-            default:
-                break;
-        }
+        setContentView(R.layout.barcodescan_portrait);
+        bmp_flashOn = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_flash_on);
+        bmp_flashOff = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_flash_off);//此按钮改为了手输图标
+        bmp_cancel = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_cancel);
 
-            // 手机版本大于11，在企业直销柜台上都是使用此布局
-            setContentView(R.layout.barcodescan_portrait);
-            bmp_scan_info = BitmapFactory.decodeResource(getResources(), resource_scan_info);
-            bmp_flashOn = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_flash_on);
-            bmp_flashOff = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_flash_off);//此按钮改为了手输图标
-            bmp_cancel = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_cancel);
-            bmp_input = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_input);
-            bmp_image_scan = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_picture);
-            bmp_color_sel = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_color_sel);
-            bmp_color_nor = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_color_nor);
-            bmp_scan_tip = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_color_tip);
+        imgSwitchFlash = findViewById(R.id.img_switchflash);
+        imgCancel = findViewById(R.id.img_cancel);
+//        imgColor = findViewById(R.id.img_color);
+        seekBarZoom = findViewById(R.id.seekBar_zoom);
 
-        imgSwitchFlash = (ImageView) findViewById(R.id.img_switchflash);
-        imgCancel = (ImageView) findViewById(R.id.img_cancel);
-        imgScanImage = (ImageView) findViewById(R.id.img_scanimg);
-        imgColor = (ImageView) findViewById(R.id.img_color);
-        imgOther = (ImageView) findViewById(R.id.img_other);
-        color_scan_tip = (ImageView) findViewById(R.id.color_scan_tip);
-        seekBarZoom = (SeekBar) findViewById(R.id.seekBar_zoom);
-
-        scan_info = (ImageView) findViewById(R.id.scan_info);
-        scan_info.setImageBitmap(bmp_scan_info);
-
-        if (ScanType.CONTINUOUS_SCHEDULE == scanType) {
-            imgScanImage.setVisibility(View.GONE);
-
-            imgOther.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    HardWare.sendMessage(ScanFragment.captureHandler, BarcodeDecodeMsg.CloseCamera);
-                    finish();
-                }
-            });
-
-            switch (scanType) {
-                case ScanType.CONTINUOUS_SCHEDULE:
-                    bmp_other = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_stockshedule);
-                    break;
-                default:
-                    break;
-            }
-
-//            if (HardWare.needRotateActivity()) {
-//                bmp_other = ImagesManager.Rotate(bmp_other, 270);
-//            }
-            imgOther.setVisibility(View.GONE);
-            imgOther.setImageBitmap(bmp_other);
-        }
-
-        if (ScanType.RETURNGOODSEXPRESS == scanType) {
-            imgScanImage.setVisibility(View.GONE);
-            scan_info.setVisibility(View.GONE);
-        }
 
         imgCancel.setImageBitmap(bmp_cancel);
-        imgScanImage.setImageBitmap(bmp_image_scan);
 
-        hasColor = true;
-        if (scanType == ScanType.EXP || scanType == ScanType.CONTINUOUS_SCHEDULE
-                || scanType == ScanType.FROMEXPOSURE || scanType == ScanType.FROMQRCODE
-                || scanType == ScanType.PRICETREND || scanType == ScanType.RETURNGOODSEXPRESS) {
-            imgColor.setVisibility(View.GONE);
-            hasColor = false;
-        }
-        /**
-         * 所有扫描都隐藏掉彩虹码切换按钮
-         * 先以改动最小的方式达到效果，控制逻辑及布局先保留
-         */
-        if (scanType == ScanType.ALL) {
-            imgColor.setVisibility(View.GONE);
-        }
-        setColorImage();
-        if (colorOn) {
-            color_scan_tip.setVisibility(View.VISIBLE);
-            color_scan_tip.setImageBitmap(bmp_scan_tip);
-        } else {
-            //color_scan_tip.setVisibility(View.GONE);
-            // 销售商品显示彩虹码tip
-            if (WccBarcode.rainbowOnly) {
-                color_scan_tip.setVisibility(View.VISIBLE);
-                color_scan_tip.setImageBitmap(bmp_scan_tip);
-            }
-        }
 
         // 扫描物流码及销售商品都支持手输
         imgSwitchFlash.setImageBitmap(bmp_flashOff);
         imgSwitchFlash.setVisibility(View.VISIBLE);
 
-        imgColor.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                colorOn = !colorOn;
-                //WccConfigure.setColorMode(context, colorOn);
-                if (colorOn)
-                    HardWare.sendMessage(ScanFragment.captureHandler, BarcodeDecodeMsg.ColorOn, false);
-                else
-                    HardWare.sendMessage(ScanFragment.captureHandler, BarcodeDecodeMsg.ColorOff, false);
-                setColorImage();
-                int resource_scan_info;
-                if (colorOn) {
-                    color_scan_tip.setVisibility(View.VISIBLE);
-                    color_scan_tip.setImageBitmap(bmp_scan_tip);
-
-                    resource_scan_info = R.drawable.icon_scan_color_info;
-                } else {
-                    color_scan_tip.setVisibility(View.GONE);
-
-                    resource_scan_info = R.drawable.icon_scan_info;
-                    if (scanType == ScanType.CONTINUOUS_SCHEDULE)
-                        resource_scan_info = R.drawable.icon_scan_info_to_stockshedule;
-                }
-//                if (HardWare.needRotateActivity()) {
-//                    bmp_scan_info = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), resource_scan_info), 270);
-//                } else {
-                    bmp_scan_info = BitmapFactory.decodeResource(getResources(), resource_scan_info);
-//                }
-                scan_info.setImageBitmap(bmp_scan_info);
-            }
-        });
 
         setFlashImage();
         imgSwitchFlash.setOnClickListener(new OnClickListener() {
@@ -371,13 +228,9 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                 // 闪光灯功能暂时取消, 在此调用手输功能,控件命名未修改
                 if (flashOnOff) {
                     // turn off flash
-                    if (WccConstant.DEBUG)
-                        Log.d(TAG, "onSwitch mode: off  " + Build.MODEL);
                     HardWare.sendMessage(ScanFragment.captureHandler, BarcodeDecodeMsg.FlashOff, false);
                 } else {
                     // turn on flash
-                    if (WccConstant.DEBUG)
-                        Log.d(TAG, "onSwitch mode: on  " + Build.MANUFACTURER);
                     HardWare.sendMessage(ScanFragment.captureHandler, BarcodeDecodeMsg.FlashOn, false);
                 }
                 flashOnOff = !flashOnOff;
@@ -392,31 +245,15 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                 finish();
             }
         });
-        imgScanImage.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                //WccConfigure.setExpressCompany(context, "");
-                startImageChooseActivity();
-            }
-        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (WccConstant.DEBUG)
-            Log.d(TAG, "barcode onResume start");
-
         setFlashImage();
 
     }
 
-    private void setColorImage() {
-        if (colorOn) {
-            imgColor.setImageBitmap(bmp_color_sel);
-        } else {
-            imgColor.setImageBitmap(bmp_color_nor);
-        }
-    }
 
     private void setFlashImage() {
         /**
@@ -436,10 +273,9 @@ public final class BarcodeScanActivity extends AppCompatActivity {
     }
 
     private boolean select(String Tag) {
-        if (WccConstant.DEBUG) Log.e(TAG, "select(SCAN)");
 
         if (ScanFragment.status != ScanFragment.STOPPED) {
-            HardWare.ToastShort(this, "请稍等片刻再进行扫描！");
+//            HardWare.ToastShort(this, "请稍等片刻再进行扫描！");
             finish();
             ScanFragment.status = ScanFragment.STOPPED;
             return false;
@@ -455,13 +291,12 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                 fragment.setArguments(args);
                 v4ft.replace(R.id.main_fl_layout, fragment, Tag);
                 //动画效果
-                //v4ft.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
+//                v4ft.setTransition(FragmentTransaction.TRANSIT_ENTER_MASK);
             } else {
                 v4ft.attach(fragment);
             }
             v4ft.commitAllowingStateLoss();
         } catch (Exception e) {
-            if (WccConstant.DEBUG)
                 e.printStackTrace();
             return false;
         }
@@ -478,7 +313,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
             }
             v4ft.commitAllowingStateLoss();
         } catch (Exception e) {
-            if (WccConstant.DEBUG)
                 e.printStackTrace();
         }
     }
@@ -493,7 +327,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
             }
             v4ft.commitAllowingStateLoss();
         } catch (Exception e) {
-            if (WccConstant.DEBUG)
                 e.printStackTrace();
         }
     }
@@ -502,13 +335,9 @@ public final class BarcodeScanActivity extends AppCompatActivity {
     protected void onStop() {
         // TODO Auto-generated method stub
         super.onStop();
-        if (WccConstant.DEBUG)
-            Log.e(TAG, "barcode scan onStop");
     }
 
     protected void onDestroy() {
-        if (WccConstant.DEBUG)
-            Log.e(TAG, "barcode scan onDestroy");
         HardWare.releaseMediaPlayer();
         mainhandler = null;
 
@@ -518,8 +347,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (WccConstant.DEBUG)
-            Log.e(TAG, "onPause");
     }
 
     @Override
@@ -551,26 +378,9 @@ public final class BarcodeScanActivity extends AppCompatActivity {
             return "GB2312";
     }
 
-    /**
-     * 启动图片识别，企业直销App不添加此功能
-     */
-    private void startImageChooseActivity() {
-
-    }
 
     public static Handler getMainHandler() {
         return mainhandler;
-    }
-
-    private void requestGoodsInfo(String barcode, String rainbowCode) {
-        //TODO
-//        MapArgs mapArgs = new MapArgs();
-//        mapArgs.put("ReqKey", reqKey);// 必填参数
-//        mapArgs.put("ReqType", ReqType.UserGoodsInfo);// 必填参数
-//        mapArgs.put("Barcode", barcode);
-//        mapArgs.put("RainbowCode", rainbowCode);
-//        mapArgs.put("CheckAddCart", true);
-//        DataFetcher.getInstance().requestData(mainhandler, mapArgs, false);
     }
 
     /**

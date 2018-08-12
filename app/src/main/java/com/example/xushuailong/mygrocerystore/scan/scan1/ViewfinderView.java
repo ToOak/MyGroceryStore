@@ -14,7 +14,6 @@ import android.view.View;
 
 import com.example.xushuailong.mygrocerystore.scan.util.HardWare;
 import com.example.xushuailong.mygrocerystore.scan.util.WccConfigure;
-import com.example.xushuailong.mygrocerystore.scan.util.WccConstant;
 import com.example.xushuailong.mygrocerystore.R;
 public final class ViewfinderView extends View {
     private static final int[] SCANNER_ALPHA = {0, 64, 128, 192, 255, 192, 128, 64};
@@ -66,9 +65,6 @@ public final class ViewfinderView extends View {
             int right = sharepre.getInt("camera_rotate_right", 0);
             int bottom = sharepre.getInt("camera_rotate_bottom", 0);
             frame = new Rect(left, top, right, bottom);
-            if (WccConstant.DEBUG) {
-                Log.e(TAG, frame.left + "," + frame.top + "," + frame.right + "," + frame.bottom);
-            }
 //        } else {
 //            int left = sharepre.getInt("activity_rotate_left", 0);
 //            int top = sharepre.getInt("activity_rotate_top", 0);

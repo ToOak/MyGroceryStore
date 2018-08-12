@@ -7,32 +7,19 @@ public interface Constant {
     String KEY_FLASH_PREF = "PrefFlash";
     String KEY_CAMSELECT_PREF = "PrefCameraSelect";
     String KEY_CAMROTATE_PREF = "PrefCameraRotate";
-    String KEY_CLEAR_CACHE = "PrefClearCache";
     String KEY_INFO_SOUND = "PrefInfoSound";
     String KEY_VIBRATE = "PrefVibrate";
     String KeyIsAutofocus = "IsAutofocus";
 
-    String KeyHasNew = "HasNew";
     String KeyDeviceID = "UserDeviceId";
     String KeyNewDeviceID = "NewUserDeviceId";
     String KeyAction = "RequireAction";
 
     String gchar = "@n0dr#ew!$";
 
-    // for NewBarcodeInputActivity
-    interface BarcodeInputType {
-        int EXPRESS = 0; // 手输物流码
-        int RAINBOWCODE = 1; // 手输彩虹码
-        // 其他手输类型可扩展
-
-    }
 
     interface InputType {
         int NOINPUT = -1;
-        int GOODS = 0;
-        int EXPRESS = 1;
-        int DRUG = 2;
-        int COLOR = 3;
     }
 
     interface ScanType {
@@ -59,12 +46,10 @@ public interface Constant {
         String kScanResult = "scan_result";
         String kResultType = "result_type";
         String kRainbowResult = "rainbow_result";
-        String kBarcodeKey = "barcodeInfokey";
         int DecodeFromGcUNI = BASE_MSG + 402;
         //		int DecodeFromMatch = BASE_MSG + 403;
         int DecodeFromHcode = BASE_MSG + 404;
         //		int DecodeFromPlate = BASE_MSG + 405;
-        String BFORMAT_ISBN13 = "ISBN-13";
         String BFORMAT_EAN13 = "EAN-13";
         String BFORMAT_EAN8 = "EAN-8";
         String BFORMAT_UPC12 = "UPC-A";
@@ -84,20 +69,10 @@ public interface Constant {
         String BFORMAT_DM = "DM_CODE";
         String BFORMAT_WEPC = "WEPC";
         String BFORMAT_HCODE = "HCODE";
-        String kActionSrc = "scan_actionSrc";
 
     }
 
     interface BarcodeType {
-        /**
-         * no symbol decoded
-         **/
-        int HZBAR_NONE = 0;
-
-        /**
-         * intermediate status
-         **/
-        int HZBAR_PARTIAL = 1;
 
         /**
          * EAN-8
@@ -108,11 +83,6 @@ public interface Constant {
          * UPC-E
          **/
         int HZBAR_UPCE = 9;
-
-        /**
-         * ISBN-10 (from EAN-13). @since 0.4
-         **/
-        int HZBAR_ISBN10 = 10;
 
         /**
          * UPC-A
@@ -129,30 +99,11 @@ public interface Constant {
          **/
         int HZBAR_ISBN13 = 14;
 
-        /**
-         * Interleaved 2 of 5. @since 0.4
-         **/
-        int HZBAR_I25 = 25;
-
-        /**
-         * GS1 DataBar (RSS). @since 0.11
-         **/
-        int HZBAR_DATABAR = 34;
-
-        /**
-         * GS1 DataBar Expanded. @since 0.11
-         **/
-        int HZBAR_DATABAR_EXP = 35;
 
         /**
          * Code 39. @since 0.4
          **/
         int HZBAR_CODE39 = 39;
-
-        /**
-         * PDF417. @since 0.6
-         **/
-        int HZBAR_PDF417 = 57;
 
         /**
          * QR Code. @since 0.10
@@ -163,11 +114,6 @@ public interface Constant {
          * Code 93
          **/
         int HZBAR_CODE93 = 93;
-
-        /**
-         * Code 25
-         **/
-        int HZBAR_CODE25 = 125;
 
         /**
          * Code 128
@@ -189,25 +135,7 @@ public interface Constant {
          **/
         int HZBAR_HANXIN = 131;
 
-        /**
-         * mask for base symbol type
-         **/
-        int HZBAR_SYMBOL = 0x00ff;
 
-        /**
-         * 2-digit add-on flag
-         **/
-        int HZBAR_ADDON2 = 0x0200;
-
-        /**
-         * 5-digit add-on flag
-         **/
-        int HZBAR_ADDON5 = 0x0500;
-
-        /**
-         * add-on flag mask
-         **/
-        int HZBAR_ADDON = 0x0700;
 
     }
 
@@ -228,17 +156,5 @@ public interface Constant {
         int Image = BASE_MSG + 506;
     }
 
-    /**
-     * default args: int-DataType, Handler-Callback, str-MapKey
-     */
-    interface DataType {
 
-        /**
-         * str-Barcode,  return ArticleInfo
-         */
-        int ArticleScan = 235;
-
-    }
-
-    String ExposureNoteFile = "file:///android_asset/wcc_help.html";
 }

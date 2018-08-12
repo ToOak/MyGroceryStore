@@ -12,7 +12,6 @@ import com.example.xushuailong.mygrocerystore.scan.util.DataConverter;
 import com.example.xushuailong.mygrocerystore.scan.util.HardWare;
 import com.example.xushuailong.mygrocerystore.scan.util.ImagesManager;
 import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant;
-import com.example.xushuailong.mygrocerystore.scan.util.WccConstant;
 import com.wochacha.scan.WccResult;
 
 public abstract class DecodeThread extends Thread {
@@ -128,9 +127,7 @@ public abstract class DecodeThread extends Thread {
         Log.e("xsl", "bmp name: " + bmpName + "\t" + (bmp != null));
         result.obj = obj;
         result.bmpName = bmpName;
-        if (WccConstant.DEBUG)
-            Log.d("DecodeThread", "----- sendDecodeResult----" + result.toString());
-        if (quit == false) {
+        if (!quit) {
             HardWare.sendMessage(parent.getHandler(), MessageConstant.BarcodeDecodeMsg.DecodeSuccess, decoder, 0, result);
         }
     }

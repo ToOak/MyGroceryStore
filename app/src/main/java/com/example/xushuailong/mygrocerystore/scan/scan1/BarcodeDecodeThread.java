@@ -50,6 +50,8 @@ public class BarcodeDecodeThread extends DecodeThread {
     }
 
     private boolean decodeByGClib(Object data, int width, int height, int mode, boolean hsv) {
+
+        Log.e("xsl", "decodeByGClib: " + ((byte[]) data).length + "\t" + width + "\t" + height);
         try {
             WccResult rawResult_gc = null;
             Rect rect;

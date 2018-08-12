@@ -319,7 +319,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
 //    	intent.putExtra("Message", "<br>请检查手机中应用权限控制，允许我查查使用相机。点击<font color=\"#ff0000\">权限设置</font>, 了解手机权限设置方法<br>");
 //		intent.putExtra("PopType", "2");
 //    	startActivity(intent);
-        HardWare.ToastShort(getActivity(), title);
+//        HardWare.ToastShort(getActivity(), title);
     }
 
     private class DataTimerTask extends TimerTask {
