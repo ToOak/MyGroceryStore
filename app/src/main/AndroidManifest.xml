@@ -27,6 +27,7 @@
 
 
 
+
         <activity
             android:name=".scan.scan1.BarcodeScanActivity"
             android:configChanges="keyboardHidden|orientation|locale|screenSize"

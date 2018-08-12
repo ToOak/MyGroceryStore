@@ -49,7 +49,6 @@ public class CameraManager {
     private boolean initialized;
     private boolean previewing;
     private Camera camera;
-    private Rect rectActivityRotate;
     private Rect rectCameraRotate;
     private Rect rectPartCameraRotate;
     private static final Pattern COMMA_PATTERN = Pattern.compile(",");
@@ -69,10 +68,6 @@ public class CameraManager {
                 return true;
         }
         return false;
-    }
-
-    public boolean isPreviewing() {
-        return previewing;
     }
 
     private final Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
@@ -152,7 +147,7 @@ public class CameraManager {
         previewing = false;
         getScreenResolution();
         rectCameraRotate();
-        rectActivityRotate();
+//        rectActivityRotate();
         rectPartCameraRotate();
     }
 
@@ -179,7 +174,7 @@ public class CameraManager {
                 /*	if (Build.MODEL.equals("U558"))
                         rotate(270);
 					else*/
-                    rotate(90);
+                rotate(90);
 //                }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -366,35 +361,48 @@ public class CameraManager {
         double xScale = ((double) cameraResolution.x) / ((double) screenResolution.x);
         double yScale = ((double) cameraResolution.y) / ((double) screenResolution.y);
 
-            return new Rect(((int) (screenRect.left * yScale) / 2) * 2,
-                    ((int) (screenRect.top * xScale) / 2) * 2,
-                    ((int) (screenRect.right * yScale) / 2) * 2,
-                    ((int) (screenRect.bottom * xScale) / 2) * 2);
+        return new Rect(((int) (screenRect.left * yScale) / 2) * 2,
+                ((int) (screenRect.top * xScale) / 2) * 2,
+                ((int) (screenRect.right * yScale) / 2) * 2,
+                ((int) (screenRect.bottom * xScale) / 2) * 2);
     }
 
     private void rectCameraRotate() {
         if (rectCameraRotate == null) {
 
 
-            int leftOffset, topOffset;
-            int width, height;
+//            int leftOffset, topOffset;
+//            int width, height;
+//
+//            width = screenResolution.y; //540
+//            height = (int) (width * 0.65f); //351
+//
+//            topOffset = (screenResolution.x - height) / 2;//304
+//            if (topOffset < 0) { //need reset ScreenScale, update init datas
+//                int x = screenResolution.x;
+//                int y = screenResolution.y;
+//                screenResolution.x = y;
+//                screenResolution.y = x;
+//                width = screenResolution.y;
+//                height = (int) (width * 0.65f);
+//                topOffset = (screenResolution.x - height) / 2;
+//            }
+//            leftOffset = (screenResolution.y - width) / 2;
+//
+//            rectCameraRotate = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
 
-            width = screenResolution.y; //540
-            height = (int) (width * 0.65f); //351
 
-            topOffset = (screenResolution.x - height) / 2;//304
-            if (topOffset < 0) { //need reset ScreenScale, update init datas
-                int x = screenResolution.x;
-                int y = screenResolution.y;
-                screenResolution.x = y;
-                screenResolution.y = x;
-                width = screenResolution.y;
-                height = (int) (width * 0.65f);
-                topOffset = (screenResolution.x - height) / 2;
-            }
-            leftOffset = (screenResolution.y - width) / 2;
-
-            rectCameraRotate = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
+            int w = ScreenUtil.getScreenWidth(app);
+            int h = ScreenUtil.getScreenHeight(app);
+            Rect frameRect = new Rect();
+            frameRect.left = (int) (w * 0.15);
+            frameRect.top = (int) ((h - (w * 0.7)) / 2);
+            frameRect.right = w - frameRect.left;
+            frameRect.bottom = h - frameRect.top;
+            rectCameraRotate = frameRect;
+            Log.e("afei", "screen: " + ScreenUtil.getScreenHeight(app));
+            Log.e("afei", "rectCameraRotate: " + rectCameraRotate.width() + "\t" + rectCameraRotate.height());
+            Log.e("afei", "rectCameraRotate: " + rectCameraRotate.top + "\t" + rectCameraRotate.bottom);
 
             SharedPreferences sharepre = PreferenceManager.getDefaultSharedPreferences(app);
             Editor editor = sharepre.edit();
@@ -427,54 +435,15 @@ public class CameraManager {
         }
     }
 
-    private void rectActivityRotate() {
-        if (rectActivityRotate == null) {
-            int leftOffset, topOffset;
-            int width, height;
-
-            height = screenResolution.y;
-            width = (int) (height * 0.65f);
-            leftOffset = (screenResolution.x - width) / 2;
-            if (leftOffset < 0) { //need reset ScreenScale, update init datas
-                int x = screenResolution.x;
-                int y = screenResolution.y;
-                screenResolution.x = y;
-                screenResolution.y = x;
-                height = screenResolution.y;
-                width = (int) (height * 0.65f);
-                leftOffset = (screenResolution.x - width) / 2;
-            }
-            topOffset = (screenResolution.y - height) / 2;
-
-            rectActivityRotate = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
-
-
-
-//            frameRect.left = (int) (w * 0.15);
-//            frameRect.top = (int) ((h - (w * 0.7)) / 2);
-//            frameRect.right = w - frameRect.left;
-//            frameRect.bottom = h - frameRect.top;
-
-
-
-            SharedPreferences sharepre = PreferenceManager.getDefaultSharedPreferences(app);
-            Editor editor = sharepre.edit();
-            editor.putInt("activity_rotate_left", rectActivityRotate.left);
-            editor.putInt("activity_rotate_top", rectActivityRotate.top);
-            editor.putInt("activity_rotate_right", rectActivityRotate.right);
-            editor.putInt("activity_rotate_bottom", rectActivityRotate.bottom);
-            editor.commit();
-        }
-    }
 
     public Rect getFramingRect() {
-            if (isPartCamera) {
-                rectPartCameraRotate();
-                return rectPartCameraRotate;
-            } else {
-                rectCameraRotate();
-                return rectCameraRotate;
-            }
+        if (isPartCamera) {
+            rectPartCameraRotate();
+            return rectPartCameraRotate;
+        } else {
+            rectCameraRotate();
+            return rectCameraRotate;
+        }
     }
 
     public int getPreviewFormat() {
@@ -571,26 +540,6 @@ public class CameraManager {
         }
     }
 
-    //某些手机会因为zoom图像太大而无法得到清晰的条码图像
-    private void setZoom(Camera.Parameters parameters) {
-        try {
-            if (parameters.isZoomSupported() == false) {
-                return;
-            }
-
-            int zoom = 0;
-            int maxZoom = parameters.getMaxZoom();
-            if (maxZoom > 0) {
-//		    	if (zoom > (maxZoom * 2) / 5)
-//		    		zoom = (maxZoom * 2) / 5;
-                if (zoom < maxZoom)
-                    parameters.setZoom(zoom);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
-    }
 
     // zxing 判断合适预览尺寸
     private static Point findBestPreviewSizeValue(CharSequence previewSizeValueString, Point screenResolution) {

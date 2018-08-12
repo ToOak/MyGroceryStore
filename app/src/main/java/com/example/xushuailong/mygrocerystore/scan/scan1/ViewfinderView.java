@@ -9,10 +9,13 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.example.xushuailong.mygrocerystore.scan.util.WccConfigure;
 import com.example.xushuailong.mygrocerystore.R;
+import com.example.xushuailong.mygrocerystore.utils.ScreenUtil;
+
 public final class ViewfinderView extends View {
     private static final int[] SCANNER_ALPHA = {0, 64, 128, 192, 255, 192, 128, 64};
     private int scannerAlpha;
@@ -41,6 +44,9 @@ public final class ViewfinderView extends View {
     private boolean colorOn = false;
     private Context con;
 
+    int cornerLength = 100;
+    int cornerLineWidth = 6;
+
     //用于画弧的四个边界矩形
     private RectF leftTopRect, leftBottomRect, rightTopRect, rightBottomRect;
 
@@ -51,12 +57,12 @@ public final class ViewfinderView extends View {
         con = context;
         SharedPreferences sharepre = PreferenceManager.getDefaultSharedPreferences(context);
 
-            int left = sharepre.getInt("camera_rotate_left", 0);
-            int top = sharepre.getInt("camera_rotate_top", 0);
-            int right = sharepre.getInt("camera_rotate_right", 0);
-            int bottom = sharepre.getInt("camera_rotate_bottom", 0);
+        int left = sharepre.getInt("camera_rotate_left", 0);
+        int top = sharepre.getInt("camera_rotate_top", 0);
+        int right = sharepre.getInt("camera_rotate_right", 0);
+        int bottom = sharepre.getInt("camera_rotate_bottom", 0);
 
-            frame = new Rect(left, top, right, bottom);
+        frame = new Rect(left, top, right, bottom);
 
         paint = new Paint();
         box = new Rect();
@@ -118,17 +124,17 @@ public final class ViewfinderView extends View {
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(maskColor);
 
-            if (colorOn || WccConfigure.getColorMode(con)) {
-                box.set(0, 0, width, m2);
-                canvas.drawRect(box, paint);
-                box.set(0, m4, width, height);
-                canvas.drawRect(box, paint);
-            } else {
-                box.set(0, 0, width, frame.top);
-                canvas.drawRect(box, paint);
-                box.set(0, frame.bottom, width, height);
-                canvas.drawRect(box, paint);
-            }
+        if (colorOn || WccConfigure.getColorMode(con)) {
+            box.set(0, 0, width, m2);
+            canvas.drawRect(box, paint);
+            box.set(0, m4, width, height);
+            canvas.drawRect(box, paint);
+        } else {
+            box.set(0, 0, width, frame.top);
+            canvas.drawRect(box, paint);
+            box.set(0, frame.bottom, width, height);
+            canvas.drawRect(box, paint);
+        }
 //        }
 
         int line_w = width >> 4;
@@ -182,11 +188,11 @@ public final class ViewfinderView extends View {
 //
 //            postInvalidateDelayed(ANIMATION_DELAY, box.left, box.top, box.right, box.bottom);
 //        } else {
-            // 固定扫描线
-            int offset = frame.width() / 6;
-            box.set(frame.left + gapDistance + offset, middle_h - 3, frame.right - gapDistance - offset, middle_h + 3);
-            canvas.drawRect(box, paint);
-            postInvalidateDelayed(ANIMATION_DELAY, box.left, box.top, box.right, box.bottom);
+        // 固定扫描线
+        int offset = frame.width() / 6;
+        box.set(frame.left + gapDistance + offset, middle_h - 3, frame.right - gapDistance - offset, middle_h + 3);
+        canvas.drawRect(box, paint);
+        postInvalidateDelayed(ANIMATION_DELAY, box.left, box.top, box.right, box.bottom);
 
 //            // V8.8将扫描线改为上下移动
 //            int offset = frame.width() / 6;
@@ -199,6 +205,11 @@ public final class ViewfinderView extends View {
 //            }
 //            postInvalidateDelayed(ANIMATION_DELAY, box.left, box.top, box.right, box.bottom);
 //        }
+
+        Log.e("afei","fram: " + ScreenUtil.getScreenStateHeight(getContext()));
+        Log.e("afei","frame: " + frame.width() + "\t" + frame.height());
+        Log.e("afei","frame: " + frame.top + "\t" + frame.bottom);
+        drawCorners(canvas, frame);
     }
 
     public void setColorOnOff(boolean v) {
@@ -207,6 +218,32 @@ public final class ViewfinderView extends View {
 
     public void drawViewfinder() {
         stopDraw = 0;
+    }
+
+    private void drawCorners(Canvas canvas, Rect frameRect) {
+        paint.setStrokeWidth(cornerLineWidth);
+
+        int halfCornerLineWidth = cornerLineWidth / 2;
+
+        // left top
+        drawLine(canvas, frameRect.left, frameRect.top + halfCornerLineWidth, cornerLength, 0);
+        drawLine(canvas, frameRect.left + halfCornerLineWidth, frameRect.top, 0, cornerLength);
+
+        // right top
+        drawLine(canvas, frameRect.right, frameRect.top + halfCornerLineWidth, -cornerLength, 0);
+        drawLine(canvas, frameRect.right - halfCornerLineWidth, frameRect.top, 0, cornerLength);
+
+        // right bottom
+        drawLine(canvas, frameRect.right - halfCornerLineWidth, frameRect.bottom, 0, -cornerLength);
+        drawLine(canvas, frameRect.right, frameRect.bottom - halfCornerLineWidth, -cornerLength, 0);
+
+        // left bottom
+        drawLine(canvas, frameRect.left, frameRect.bottom - halfCornerLineWidth, cornerLength, 0);
+        drawLine(canvas, frameRect.left + halfCornerLineWidth, frameRect.bottom, 0, -cornerLength);
+    }
+
+    private void drawLine(Canvas canvas, float x, float y, int dx, int dy) {
+        canvas.drawLine(x, y, x + dx, y + dy, paint);
     }
 
 }
