@@ -282,8 +282,8 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
         if (needPreview == false)
             return;
         try {
-            if (HardWare.needRotateActivity())
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//            if (HardWare.needRotateActivity())
+//                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             app.getCamera().openDriver();
         } catch (Exception e) {
             e.printStackTrace();

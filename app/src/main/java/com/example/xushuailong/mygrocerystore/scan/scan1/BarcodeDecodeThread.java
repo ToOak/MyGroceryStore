@@ -12,7 +12,6 @@ import com.wochacha.scan.WccBarcode;
 import com.wochacha.scan.WccResult;
 
 public class BarcodeDecodeThread extends DecodeThread {
-    private String TAG;
     public WccBarcode scanner = null; // gc_lib
     private int format;
     private Rect activeRect;
@@ -51,7 +50,6 @@ public class BarcodeDecodeThread extends DecodeThread {
     }
 
     private boolean decodeByGClib(Object data, int width, int height, int mode, boolean hsv) {
-        Log.e("lalala", "decodeByGClib: " + width + "\t" + height);
         try {
             WccResult rawResult_gc = null;
             Rect rect;
@@ -62,7 +60,6 @@ public class BarcodeDecodeThread extends DecodeThread {
 
             colorOn = WccConfigure.getColorMode(mContext);
 
-            Log.e("lalala", "isImage: " + isImageScan);
             if (isImageScan) {
                 if (mode != ScanMode.LIGHTWATCHER) {
                     rgb = (byte[]) data;// 图片识别实际上是rgb数据
@@ -77,13 +74,9 @@ public class BarcodeDecodeThread extends DecodeThread {
                 }
             } else {
                 yuv = (byte[]) data;
-                if (!HardWare.needRotateActivity()) {
-                    if (rect1 == null)
-                        rect1 = new Rect((w - activeRect.bottom) & 0xfffffffe, activeRect.left & 0xfffffffe, (w - activeRect.top) & 0xfffffffe, activeRect.right & 0xfffffffe);
-                    rect = rect1;
-                } else
-                    rect = activeRect;
-                Log.e("lalala", "rect 1: " + rect.width() + "\t" + rect.height());
+                if (rect1 == null)
+                    rect1 = new Rect((w - activeRect.bottom) & 0xfffffffe, activeRect.left & 0xfffffffe, (w - activeRect.top) & 0xfffffffe, activeRect.right & 0xfffffffe);
+                rect = rect1;
 
                 int sample = 1;
                 if (mode == ScanMode.BARCODE || mode == ScanMode.BLURBARCODE) {
@@ -93,7 +86,6 @@ public class BarcodeDecodeThread extends DecodeThread {
                         rect2 = new Rect((rect.left + rw) & 0xfffffffe, rect.top & 0xfffffffe, (rect.right - rw) & 0xfffffffe, rect.bottom & 0xfffffffe);
                     }
                     rect = rect2;
-                    Log.e("lalala", "rect 2: " + rect.width() + "\t" + rect.height());
                 } else {
                     if (rect3 == null) {
                         int rh = (rect.height() - rect.width()) / 2;
@@ -101,24 +93,17 @@ public class BarcodeDecodeThread extends DecodeThread {
                         rect3 = new Rect(rect.left & 0xfffffffe, (rect.top + rh) & 0xfffffffe, rect.right & 0xfffffffe, (rect.bottom - rh) & 0xfffffffe);
                     }
                     rect = rect3;
-                    Log.e("lalala", "rect 3: " + rect.width() + "\t" + rect.height());
-//                    sample = rect.width() / 200;
+                    sample = rect.width() / 200;
                 }
 
                 scanner.setRoteMode(1);
-                Log.e("lalala", "source is null: " + (source == null));
                 if (source == null)
                     source = mContext.getCamera().buildLuminanceSource(yuv, w, h, rect);
                 else
                     source.setData(yuv, w, h, rect);
-                Log.e("lalala", "source: " + source.getWidth() + "\t" + source.getHeight());
 
 
                 if (mode == ScanMode.BARCODE || mode == ScanMode.BLURBARCODE) {
-//					if (colorOn)
-//						yuv = source.getRGBMatrix(format, false);
-//					else
-//						yuv = source.getMatrix();
                     rgb = source.getRGBMatrix(format, false);
                     yuv = source.getMatrix();
                 } else {
@@ -126,13 +111,13 @@ public class BarcodeDecodeThread extends DecodeThread {
                 }
 
 
-//                if (sample > 1) {
-//                    w = (source.getWidth() / sample) & 0xfffffffe;
-//                    h = (source.getHeight() / sample) & 0xfffffffe;
-//                } else {
+                if (sample > 1) {
+                    w = (source.getWidth() / sample) & 0xfffffffe;
+                    h = (source.getHeight() / sample) & 0xfffffffe;
+                } else {
                     w = source.getWidth();
                     h = source.getHeight();
-//                }
+                }
                 Log.e("lalala", "sample: " + w + "\t" + h + "\t" + sample);
             }
 

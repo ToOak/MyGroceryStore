@@ -4,7 +4,6 @@ import android.content.Context;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.example.xushuailong.mygrocerystore.scan.scan1.Range;
 import com.example.xushuailong.mygrocerystore.scan.util.Constant;
 import com.example.xushuailong.mygrocerystore.scan.util.WccConfigure;
 
@@ -15,10 +14,7 @@ public class WccBarcode {
     // 用于标识只扫描彩虹码，提高识别效率
     public static boolean rainbowOnly = false;
 
-    public int pGcBarcode;
-    private Range lastRect;
     private Context context;
-    private TelephonyManager teleManager;
     private static boolean libInited = false;
     private static int initResult = 1;
     private int rotateMode;
@@ -29,7 +25,6 @@ public class WccBarcode {
     public WccBarcode(Context con) {
         this.rotateMode = 1;
         context = con;
-        lastRect = new Range();
         if (libInited == false) {
             libInited = true;
             try {
@@ -88,9 +83,6 @@ public class WccBarcode {
                  */
                 result = wccColorInput(rgb, rotateMode, width, height, 0);
 
-//              调试log
-//				WccLog.e("AN", "debug info = " + result.flag + ", ean13code =" + new String(result.result));
-//				WccLog.e("AN", "color code = "+ new String(result.colorcode));
 
                 if (result.flag != 2) {
                     result = wccGrayInput(yuv, rotateMode, width, height);

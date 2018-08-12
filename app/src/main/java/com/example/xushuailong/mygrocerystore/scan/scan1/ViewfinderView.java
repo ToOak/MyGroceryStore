@@ -60,7 +60,7 @@ public final class ViewfinderView extends View {
 
         con = context;
         SharedPreferences sharepre = PreferenceManager.getDefaultSharedPreferences(context);
-        if (!HardWare.needRotateActivity()) {
+//        if (!HardWare.needRotateActivity()) {
             int left = sharepre.getInt("camera_rotate_left", 0);
             int top = sharepre.getInt("camera_rotate_top", 0);
             int right = sharepre.getInt("camera_rotate_right", 0);
@@ -69,13 +69,13 @@ public final class ViewfinderView extends View {
             if (WccConstant.DEBUG) {
                 Log.e(TAG, frame.left + "," + frame.top + "," + frame.right + "," + frame.bottom);
             }
-        } else {
-            int left = sharepre.getInt("activity_rotate_left", 0);
-            int top = sharepre.getInt("activity_rotate_top", 0);
-            int right = sharepre.getInt("activity_rotate_right", 0);
-            int bottom = sharepre.getInt("activity_rotate_bottom", 0);
-            frame = new Rect(left, top, right, bottom);
-        }
+//        } else {
+//            int left = sharepre.getInt("activity_rotate_left", 0);
+//            int top = sharepre.getInt("activity_rotate_top", 0);
+//            int right = sharepre.getInt("activity_rotate_right", 0);
+//            int bottom = sharepre.getInt("activity_rotate_bottom", 0);
+//            frame = new Rect(left, top, right, bottom);
+//        }
 
         paint = new Paint();
         box = new Rect();
@@ -138,19 +138,19 @@ public final class ViewfinderView extends View {
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(maskColor);
 
-        if (HardWare.needRotateActivity()) {
-            if (colorOn || WccConfigure.getColorMode(con)) {
-                box.set(0, frame.top, m1, frame.bottom + 1);
-                canvas.drawRect(box, paint);
-                box.set(m3, frame.top, width, frame.bottom + 1);
-                canvas.drawRect(box, paint);
-            } else {
-                box.set(0, frame.top, frame.left, frame.bottom + 1);
-                canvas.drawRect(box, paint);
-                box.set(frame.right + 1, frame.top, width, frame.bottom + 1);
-                canvas.drawRect(box, paint);
-            }
-        } else {
+//        if (HardWare.needRotateActivity()) {
+//                if (colorOn || WccConfigure.getColorMode(con)) {
+//                    box.set(0, frame.top, m1, frame.bottom + 1);
+//                    canvas.drawRect(box, paint);
+//                    box.set(m3, frame.top, width, frame.bottom + 1);
+//                    canvas.drawRect(box, paint);
+//                } else {
+//                box.set(0, frame.top, frame.left, frame.bottom + 1);
+//                canvas.drawRect(box, paint);
+//                box.set(frame.right + 1, frame.top, width, frame.bottom + 1);
+//                canvas.drawRect(box, paint);
+//            }
+//        } else {
             if (colorOn || WccConfigure.getColorMode(con)) {
                 box.set(0, 0, width, m2);
                 canvas.drawRect(box, paint);
@@ -162,7 +162,7 @@ public final class ViewfinderView extends View {
                 box.set(0, frame.bottom, width, height);
                 canvas.drawRect(box, paint);
             }
-        }
+//        }
 
         line_w = width >> 4;
 
@@ -208,13 +208,13 @@ public final class ViewfinderView extends View {
         } else
             paint.setAlpha(200);
 
-        if (HardWare.needRotateActivity()) {
-            int offset = frame.height() / 6;
-            box.set(middle_v - 3, (newTop + offset + gapDistance), middle_v + 3, (newBottom - offset - gapDistance));
-            canvas.drawRect(box, paint);
-
-            postInvalidateDelayed(ANIMATION_DELAY, box.left, box.top, box.right, box.bottom);
-        } else {
+//        if (HardWare.needRotateActivity()) {
+//            int offset = frame.height() / 6;
+//            box.set(middle_v - 3, (newTop + offset + gapDistance), middle_v + 3, (newBottom - offset - gapDistance));
+//            canvas.drawRect(box, paint);
+//
+//            postInvalidateDelayed(ANIMATION_DELAY, box.left, box.top, box.right, box.bottom);
+//        } else {
             // 固定扫描线
             int offset = frame.width() / 6;
             box.set(frame.left + gapDistance + offset, middle_h - 3, frame.right - gapDistance - offset, middle_h + 3);
@@ -231,7 +231,7 @@ public final class ViewfinderView extends View {
 //                i = 0;
 //            }
 //            postInvalidateDelayed(ANIMATION_DELAY, box.left, box.top, box.right, box.bottom);
-        }
+//        }
     }
 
     public void setColorOnOff(boolean v) {

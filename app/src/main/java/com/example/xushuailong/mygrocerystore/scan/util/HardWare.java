@@ -1005,14 +1005,6 @@ public class HardWare {
 		return true;
 	}
 
-    public static boolean needRotateActivity() {
-    	if (WccConstant.DEBUG)
-    		Log.d(TAG , "Build.VERSION.SDK_INT =" + Build.VERSION.SDK_INT);
-    	if (Build.VERSION.SDK_INT < 11) /*还有三星某款手机*/
-    		return true;
-    	else
-    		return false;
-    }
 
 //	public static boolean needRotate180Layout() {
 //    	if (Build.MANUFACTURER.equals("HTC") && Build.MODEL.equals("HTC A810e"))

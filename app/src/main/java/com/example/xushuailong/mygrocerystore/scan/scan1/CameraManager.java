@@ -175,12 +175,12 @@ public class CameraManager {
             }
 
             try {
-                if (!HardWare.needRotateActivity()) {
+//                if (!HardWare.needRotateActivity()) {
                 /*	if (Build.MODEL.equals("U558"))
                         rotate(270);
 					else*/
                     rotate(90);
-                }
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -194,7 +194,7 @@ public class CameraManager {
         setCameraParameters();
         //相机打开之后，发消息通知seekBar初始化一些值，如currentZoom、maxZoom
         HardWare.sendMessage(BarcodeScanActivity.getMainHandler(), MessageConstant.SET_ZOOM, getCurrentZoom(), getMaxZoom());
-        HardWare.sendMessage(BarcodeScan2Activity.getMainHandler(), MessageConstant.SET_ZOOM, getCurrentZoom(), getMaxZoom());
+//        HardWare.sendMessage(BarcodeScan2Activity.getMainHandler(), MessageConstant.SET_ZOOM, getCurrentZoom(), getMaxZoom());
     }
 
     public void closeDriver() {
@@ -369,17 +369,17 @@ public class CameraManager {
         double xScale = ((double) cameraResolution.x) / ((double) screenResolution.x);
         double yScale = ((double) cameraResolution.y) / ((double) screenResolution.y);
 
-        if (!HardWare.needRotateActivity()) {
+//        if (!HardWare.needRotateActivity()) {
             return new Rect(((int) (screenRect.left * yScale) / 2) * 2,
                     ((int) (screenRect.top * xScale) / 2) * 2,
                     ((int) (screenRect.right * yScale) / 2) * 2,
                     ((int) (screenRect.bottom * xScale) / 2) * 2);
-        } else {
-            return new Rect(((int) (screenRect.left * xScale) / 2) * 2,
-                    ((int) (screenRect.top * yScale) / 2) * 2,
-                    ((int) (screenRect.right * xScale) / 2) * 2,
-                    ((int) (screenRect.bottom * yScale) / 2) * 2);
-        }
+//        } else {
+//            return new Rect(((int) (screenRect.left * xScale) / 2) * 2,
+//                    ((int) (screenRect.top * yScale) / 2) * 2,
+//                    ((int) (screenRect.right * xScale) / 2) * 2,
+//                    ((int) (screenRect.bottom * yScale) / 2) * 2);
+//        }
     }
 
     private void rectCameraRotate() {
@@ -524,21 +524,13 @@ public class CameraManager {
     }
 
     public Rect getFramingRect() {
-        if (!HardWare.needRotateActivity()) {
             if (isPartCamera) {
                 rectPartCameraRotate();
                 return rectPartCameraRotate;
-//                rectCameraRotate();
-//                WccLogger.e("abc", "rectPartCameraRotate  " + rectCameraRotate);
-//                return rectCameraRotate;
             } else {
                 rectCameraRotate();
                 return rectCameraRotate;
             }
-        } else {
-            rectActivityRotate();
-            return rectActivityRotate;
-        }
     }
 
     public int getPreviewFormat() {

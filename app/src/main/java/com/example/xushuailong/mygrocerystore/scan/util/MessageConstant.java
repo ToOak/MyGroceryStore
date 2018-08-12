@@ -6,14 +6,10 @@ package com.example.xushuailong.mygrocerystore.scan.util;
 public interface MessageConstant {
     int BASE_MSG = 0xff0000;
 
-    int SearchFinished = BASE_MSG + 3;
     /**
      * msg.arg1 = pageNum
      */
 
-    int SHOW_DIALOG = BASE_MSG + 8;
-    int CLOSE_DIALOG = BASE_MSG + 9;
-    int ACTIVITY_CLOSE = BASE_MSG + 10;
     int SleepDown = BASE_MSG + 15;
 
     int SET_ZOOM = BASE_MSG + 20;

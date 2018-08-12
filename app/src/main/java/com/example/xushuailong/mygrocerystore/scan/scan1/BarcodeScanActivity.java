@@ -34,7 +34,6 @@ import com.example.xushuailong.mygrocerystore.scan.util.SpUtil;
 import com.example.xushuailong.mygrocerystore.scan.util.Validator;
 import com.example.xushuailong.mygrocerystore.scan.util.WccConfigure;
 import com.example.xushuailong.mygrocerystore.scan.util.WccConstant;
-import com.example.xushuailong.mygrocerystore.utils.ScreenUtil;
 import com.wochacha.scan.WccBarcode;
 import com.wochacha.scan.WccResult;
 
@@ -51,12 +50,10 @@ public final class BarcodeScanActivity extends AppCompatActivity {
 
     private WccScanApplication app;
     private ImageView imgSwitchFlash;
-    private ImageView imgInput;
     private ImageView imgCancel;
     private ImageView imgScanImage;
     private ImageView imgColor;
     private ImageView imgOther;
-    private ImageView img_anim;
     private ImageView scan_info;
     private ImageView color_scan_tip;
 
@@ -70,22 +67,17 @@ public final class BarcodeScanActivity extends AppCompatActivity {
     private Bitmap bmp_color_sel;
     private Bitmap bmp_color_nor;
     private Bitmap bmp_other;
-    ProgressDialog pd;
     private static Handler mainhandler;
     private int scanType;
     private int focusType;
 
-    public static String FilePath = "";
     private boolean flashOnOff = false;
-    private int screenWidth;
-    private int screenHeight;
 
     private boolean colorOn = false;
     private boolean hasColor = false;
 
     private SeekBar seekBarZoom;
 
-    private String reqKey;
     private boolean isRequesting = false;
 
     @Override
@@ -97,8 +89,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
         app = (WccScanApplication) getApplication();
         flashOnOff = false;
 
-        screenWidth = ScreenUtil.getScreenWidth(getApplicationContext());
-        screenHeight = ScreenUtil.getScreenHeight(getApplicationContext());
 
         mainhandler = new Handler() {
             @Override
@@ -120,16 +110,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                             String barcode = new String(res.result);
                             String colorCode = new String(res.colorcode);
 
-//                            if (WccConstant.DEBUG) {
-//                                HardWare.ToastLong(BarcodeScanActivity.this, "type:" + barType + "\nbarcode:" + barcode + "\nrainbow:" + colorCode);
-//                            }
-
-//                            DecodeResultProcessor processor = new DecodeResultProcessor(BarcodeScanActivity.this, msg.arg1, result, scanType, true, true);
-//                            processor.setInvoker(mainhandler);
-//                            String code = processor.process();
-//                            if (WccConstant.DEBUG) {
-//                                Log.e(TAG, "processor" + processor + "" + code);
-//                            }
                             if (!Validator.isEffective(barcode)) {
                                 HardWare.sendMessage(ScanFragment.captureHandler, MessageConstant.BarcodeDecodeMsg.RestartPreviewAndDecode);
                                 break;
@@ -166,7 +146,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                                 Log.e("xsl", "bitmap: " + result.bitmap.getWidth() + "\t" + result.bitmap.getHeight());
                                 imageView.setImageBitmap(result.bitmap);
 
-//                                finish();
                             } else {
                                 if (WccBarcode.rainbowOnly) {
                                     if (barType == 13 && Validator.isEffective(colorCode) && !"0".equals(colorCode)) {
@@ -184,80 +163,11 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                                 HardWare.sendMessageDelayed(ScanFragment.captureHandler, BarcodeDecodeMsg.RestartPreviewAndDecode, 1500);
                             }
                             break;
-                        case MessageConstant.SHOW_DIALOG:
 
-                            if (pd != null && DataType.ArticleScan != msg.arg1) {
-                                pd.show();
-                            }
-//						else {
-//                        	Intent intent = new Intent(app, PopMessageView.class);
-//                        	intent.putExtra("PopType", "0");
-//                        	startActivity(intent);
-//                        }
-                            break;
-                        case MessageConstant.CLOSE_DIALOG:
-                            if (pd != null && pd.isShowing())
-                                pd.dismiss();
-
-                            break;
-
-                        case MessageConstant.SearchFinished:
-                            HardWare.getInstance(app).sendMessage(MessageConstant.CLOSE_DIALOG);
-
-                            break;
-                        case MessageConstant.ACTIVITY_CLOSE:
-                            if (msg.obj != null && msg.obj instanceof Intent)
-                                HardWare.getInstance(app).sendMessage(BarcodeDecodeMsg.ScanResult, msg.obj);
-                            finish();
-                            break;
                         case MessageConstant.BarcodeDecodeMsg.FlashOn:
                             flashOnOff = true;
                             setFlashImage();
                             break;
-//                        case ReqType.UserGoodsInfo:
-//                            isRequesting = false;
-//                            try {
-//                                SparseArray<Object> goodsInfoResult = (SparseArray<Object>) msg.obj;
-//                                if (goodsInfoResult != null) {
-//                                    //TODO
-////                                    GoodsInfo goodsInfo = (GoodsInfo) goodsInfoResult.get(1);
-////                                    List<TraceDetailInfo> traceInfoList = (List<TraceDetailInfo>) goodsInfoResult.get(2);
-////                                    List<PromotionInfo> promotionInfoList = (List<PromotionInfo>) goodsInfoResult.get(3);
-////                                    if ("OK".equals(goodsInfo.getIsokType())) {
-////                                        switch (goodsInfo.getStatus()) {
-////                                            case "SALE":
-////                                                Intent intent = new Intent(BarcodeScanActivity.this, GoodsDetailActivity.class);
-////                                                intent.putExtra("GoodsInfo", goodsInfo);
-////                                                intent.putExtra("TraceInfoList", (Serializable) traceInfoList);
-////                                                intent.putExtra("PromotionInfoList", (Serializable) promotionInfoList);
-////                                                startActivity(intent);
-////                                                finish();
-////                                                break;
-////                                            case "SOLD":
-////                                                HardWare.ToastShort(BarcodeScanActivity.this, "当前商品已售出!");
-////                                                return;
-////                                            case "LOSS":
-////                                            case "DCMSOLD":
-////                                                HardWare.ToastShort(BarcodeScanActivity.this, "当前商品已损耗!");
-////                                                break;
-////                                            case "OFFLINESOLD":
-////                                                HardWare.ToastShort(BarcodeScanActivity.this, "当前商品线下已销售!");
-////                                                return;
-////                                            case "INCART":
-////                                                HardWare.ToastShort(BarcodeScanActivity.this, "当前商品已添加购物车!");
-////                                                break;
-////                                            default:
-////                                                HardWare.ToastShort(BarcodeScanActivity.this, "当前商品已不可销售!");
-////                                                return;
-////                                        }
-////                                    } else {
-////                                        ToastUtil.toastShort(BarcodeScanActivity.this, goodsInfo.getMsg(BarcodeScanActivity.this));
-////                                    }
-//                                }
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//                            break;
                         case MessageConstant.SET_ZOOM:
                             setSeekBar(seekBarZoom, msg.arg1, msg.arg2);
                             break;
@@ -275,23 +185,9 @@ public final class BarcodeScanActivity extends AppCompatActivity {
 
         processIntentData();
 
-        pd = new ProgressDialog(BarcodeScanActivity.this);
-        pd.setMessage("请稍候......");
-
-        pd.setCancelable(true);
-        pd.setCanceledOnTouchOutside(false);
-        pd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                finish();
-            }
-        });
     }
 
     private void processIntentData() {
-
-        reqKey = hashCode() + "";
 
         Intent data = getIntent();
         scanType = data.getIntExtra("ScanType", ScanType.ALL);
@@ -329,16 +225,7 @@ public final class BarcodeScanActivity extends AppCompatActivity {
         processIntentData();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        // TODO Auto-generated method stub
-        super.onSaveInstanceState(outState);
-        outState.putInt("screenWidth", screenWidth);
-        outState.putInt("screenHeight", screenHeight);
-    }
-
     private void initScanView() {
-        //int resource_scan_info = R.drawable.icon_scan_info;
         //销售商品显示彩虹码标记
         int resource_scan_info;
         if (WccBarcode.rainbowOnly) {
@@ -359,38 +246,23 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                 break;
         }
 
-        if (HardWare.needRotateActivity()) {
-            setContentView(R.layout.barcodescan);
-            bmp_flashOn = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_flash_on), 270);
-            bmp_flashOff = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_flash_off), 270);
-            bmp_scan_info = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), resource_scan_info), 270);
-            bmp_cancel = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_cancel), 270);
-            bmp_input = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_input), 270);
-            bmp_image_scan = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_picture), 270);
-            bmp_color_sel = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_color_sel), 270);
-            bmp_color_nor = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_color_nor), 270);
-            bmp_scan_tip = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_color_tip), 270);
-        } else {
             // 手机版本大于11，在企业直销柜台上都是使用此布局
             setContentView(R.layout.barcodescan_portrait);
             bmp_scan_info = BitmapFactory.decodeResource(getResources(), resource_scan_info);
             bmp_flashOn = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_flash_on);
-            bmp_flashOff = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_input2);//此按钮改为了手输图标
+            bmp_flashOff = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_flash_off);//此按钮改为了手输图标
             bmp_cancel = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_cancel);
             bmp_input = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_input);
             bmp_image_scan = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_picture);
             bmp_color_sel = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_color_sel);
             bmp_color_nor = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_color_nor);
             bmp_scan_tip = BitmapFactory.decodeResource(getResources(), R.drawable.icon_scan_color_tip);
-        }
 
         imgSwitchFlash = (ImageView) findViewById(R.id.img_switchflash);
-        imgInput = (ImageView) findViewById(R.id.img_input);
         imgCancel = (ImageView) findViewById(R.id.img_cancel);
         imgScanImage = (ImageView) findViewById(R.id.img_scanimg);
         imgColor = (ImageView) findViewById(R.id.img_color);
         imgOther = (ImageView) findViewById(R.id.img_other);
-        img_anim = (ImageView) findViewById(R.id.scan_img_anim);
         color_scan_tip = (ImageView) findViewById(R.id.color_scan_tip);
         seekBarZoom = (SeekBar) findViewById(R.id.seekBar_zoom);
 
@@ -398,7 +270,6 @@ public final class BarcodeScanActivity extends AppCompatActivity {
         scan_info.setImageBitmap(bmp_scan_info);
 
         if (ScanType.CONTINUOUS_SCHEDULE == scanType) {
-            imgInput.setVisibility(View.GONE);
             imgScanImage.setVisibility(View.GONE);
 
             imgOther.setOnClickListener(new OnClickListener() {
@@ -417,20 +288,18 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                     break;
             }
 
-            if (HardWare.needRotateActivity()) {
-                bmp_other = ImagesManager.Rotate(bmp_other, 270);
-            }
+//            if (HardWare.needRotateActivity()) {
+//                bmp_other = ImagesManager.Rotate(bmp_other, 270);
+//            }
             imgOther.setVisibility(View.GONE);
             imgOther.setImageBitmap(bmp_other);
         }
 
         if (ScanType.RETURNGOODSEXPRESS == scanType) {
-            imgInput.setVisibility(View.GONE);
             imgScanImage.setVisibility(View.GONE);
             scan_info.setVisibility(View.GONE);
         }
 
-        imgInput.setImageBitmap(bmp_input);
         imgCancel.setImageBitmap(bmp_cancel);
         imgScanImage.setImageBitmap(bmp_image_scan);
 
@@ -487,11 +356,11 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                     if (scanType == ScanType.CONTINUOUS_SCHEDULE)
                         resource_scan_info = R.drawable.icon_scan_info_to_stockshedule;
                 }
-                if (HardWare.needRotateActivity()) {
-                    bmp_scan_info = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), resource_scan_info), 270);
-                } else {
+//                if (HardWare.needRotateActivity()) {
+//                    bmp_scan_info = ImagesManager.Rotate(BitmapFactory.decodeResource(getResources(), resource_scan_info), 270);
+//                } else {
                     bmp_scan_info = BitmapFactory.decodeResource(getResources(), resource_scan_info);
-                }
+//                }
                 scan_info.setImageBitmap(bmp_scan_info);
             }
         });
@@ -514,53 +383,9 @@ public final class BarcodeScanActivity extends AppCompatActivity {
                 flashOnOff = !flashOnOff;
                 setFlashImage();
 
-                /**
-                 * 调用手输功能
-                 */
-//                if (scanType == ScanType.EXP) {
-////            		Intent intent = new Intent(BarcodeScanActivity.this, ExpressMainActivity.class);
-////	                intent.putExtra("ActTag", ActTag.ExpressMain);
-////	                startActivity(intent);
-////					finish();
-//                } else {
-//                    Intent intent = new Intent(BarcodeScanActivity.this, BarcodeInputActivity.class);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    intent.putExtra("ScanType", scanType);
-//                    intent.putExtra("hasColor", true);
-//                    startActivity(intent);
-//                    finish();
-//                }
-                //TODO
-//                Intent intent = new Intent(BarcodeScanActivity.this, NewBarcodeInputActivity.class);
-//                if (WccBarcode.rainbowOnly) {
-//                    intent.putExtra("BarcodeInputType", Constant.BarcodeInputType.RAINBOWCODE);
-//                } else {
-//                    // 目前非彩虹码之外手输只有物流码，后面需求可能扩展
-//                    intent.putExtra("BarcodeInputType", Constant.BarcodeInputType.EXPRESS);
-//                }
-//
-//                startActivity(intent);
-//                finish();
             }
         });
 
-        imgInput.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                if (scanType == ScanType.EXP) {
-//            		Intent intent = new Intent(BarcodeScanActivity.this, ExpressMainActivity.class);
-//	                intent.putExtra("ActTag", ActTag.ExpressMain);
-//	                startActivity(intent);
-//					finish();
-                } else {
-                    Intent intent = new Intent(BarcodeScanActivity.this, BarcodeInputActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra("ScanType", scanType);
-                    intent.putExtra("hasColor", hasColor);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
 
         imgCancel.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
