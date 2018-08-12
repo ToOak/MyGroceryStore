@@ -2,5 +2,66 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#0077c4</color>
+
+    <!-- btn_bg -->
+    <color name="blue">#33b0ff</color>
+    <color name="deeper_blue">#0077c4</color>
+    <color name="yellow">#efa739</color>
+    <color name="deeper_yellow">#ff9a00</color>
+    <color name="red">#f44646</color>
+    <color name="deeper_red">#d12b2b</color>
+
+    <!--color for scan start-->
+    <color name="transparent">#00000000</color>
+    <color name="wcc_transparent_40p">#66000000</color>
+    <color name="wcc_transparent_50p">#80ffffff</color>
+    <color name="wcc_color_3">#fff8f8f8</color>
+    <color name="wcc_color_11">#ffb0b0b0</color>
+    <color name="wcc_transparent_80p">#cc000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="viewfinder_outrange">#ffff0000</color>
+    <color name="white">#ffffffff</color>
+    <color name="bg_activity">#fff3f3f3</color>
+    <color name="black">#ff000000</color>
+    <color name="wcc_color_2">#ffc8c8c8</color>
+    <color name="wcc_color_4">#ff148af7</color>
+    <color name="wcc_color_9">#ff000000</color>
+    <color name="wcc_color_10">#ff888888</color>
+    <color name="wcc_color_17">#ffdedede</color>
+    <color name="wcc_color_5">#ff0b7feb</color>
+    <!--color for scan end-->
+    <color name="bg_popupwindow">#dcdcdc</color>
+    <!--color for login bg-->
+    <color name="login_bg_shade">#00afe4</color>
+    <color name="login_bg_deeper">#0077c4</color>
+    <color name="white_shade">#88ffffff</color>
+    <color name="wcc_color_12">#ffe2e2e2</color>
+    <color name="wcc_color_13">#ffc6c6c6</color>
+    <color name="login_bottom_text">#8159c3e4</color>
+    <color name="wcc_color_14">#1b1b1b</color>
+    <color name="wcc_color_15">#505050</color>
+    <color name="wcc_color_16">#646464</color>
+
+    <color name="gray_dividing">#eaeaea</color>
+    <color name="gray_background">#eeeef3</color>
+
+    <color name="blue_pressed">#0077c4</color>
+    <color name="blue_pressed_normal">#33b0ff</color>
+    <color name="blue_bg_title">#c7e5fc</color>
+    <color name="orange_price">#fe9b14</color>
+    <color name="black_light">#787878</color>
+    <color name="black_deep">#505050</color>
+    <color name="wcc_color_18">#d7d7d7</color>
+    <color name="wcc_transparent_35sp">#59000000</color>
+    <color name="wcc_color_19">#a0a0a0</color>
+    <color name="wcc_color_20">#ff59c3e4</color>
+    <color name="wcc_color_21">#ff0082b8</color>
+    <color name="wcc_color_22">#ecf6ff</color>
+    <color name="wcc_color_23">#576a93</color>
+    <color name="wcc_color_24">#969696</color>
+    <color name="wcc_color_25">#ff6600</color>
+    <color name="wcc_color_26">#fd3e3e</color>
+
+
 </resources>

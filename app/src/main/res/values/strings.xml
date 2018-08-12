@@ -2,4 +2,14 @@
     <string name="app_name">MyGroceryStore</string>
     <string name="male">男</string>
     <string name="female">女</string>
+    <string name="login_activity_login">登录</string>
+    <string name="main_activity_purchase">进货入库</string>
+    <string name="main_activity_sale">销售商品</string>
+    <string name="barinput_empty">请输入条码</string>
+
+    <string name="order_num">%1$s件</string>
+    <string name="order_paice">%1$s元</string>
+    <string name="default_spinner_hint">请选择原因</string>
+
+    <string name="check_list_with_underline"><u>存货盘点</u></string>
 </resources>
