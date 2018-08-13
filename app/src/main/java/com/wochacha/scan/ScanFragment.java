@@ -25,6 +25,7 @@ import com.wochacha.scan.util.WccConfigure;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import com.example.xushuailong.mygrocerystore.R;
 
 public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
@@ -64,7 +65,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
         HardWare.getScreenHeight(act);
         HardWare.getScreenWidth(act);
         app = (WccScanApplication) act.getApplication();
-        cameraManager = CameraManager.getInstance(app,false);
+        cameraManager = CameraManager.getInstance(app, false);
         Window window = act.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -90,8 +91,8 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
     }
 
     private void findViews(View view) {
-        surfaceView = (CameraPreview) view.findViewById(R.id.preview_view);
-        viewfinderView = (ViewfinderView) view.findViewById(R.id.viewfinder_view);
+        surfaceView = view.findViewById(R.id.preview_view);
+        viewfinderView = view.findViewById(R.id.viewfinder_view);
         viewfinderView.setVisibility(View.GONE);
 
         captureHandler = null;
@@ -105,7 +106,9 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
             flashOnOff = !flashOnOff;
         }
         CameraManager.isReleased = true;
-        cameraManager.getCamera().setPreviewCallback(null);
+        if (cameraManager.getCamera() != null) {
+            cameraManager.getCamera().setPreviewCallback(null);
+        }
         app.getCamera().stopPreview();
         close();
         stopThread();
@@ -146,7 +149,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
                         break;
                     case BarcodeDecodeMsg.AUTOFOCUS:
                         if (state == State.PREVIEW) {
-                            Log.e("oak","BarcodeDecodeMsg.AUTOFOCUS");
+                            Log.e("oak", "BarcodeDecodeMsg.AUTOFOCUS");
                             try {
                                 app.getCamera().requestAutoFocus(this, BarcodeDecodeMsg.AUTOFOCUS);
                             } catch (IOException e) {
@@ -322,13 +325,13 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
         if (state == State.SUCCESS && decodeThread != null && captureHandler != null) {
             state = State.PREVIEW;
             try {
-                Log.e("oak","restart preview and decode");
+                Log.e("oak", "restart preview and decode");
                 if (decodeThread.getHandler() == null)
                     Thread.sleep(100);
                 app.getCamera().requestPreviewFrame(decodeThread.getHandler(), BarcodeDecodeMsg.DECODE, true);
                 HardWare.sendMessageDelayed(captureHandler, BarcodeDecodeMsg.AUTOFOCUS, 10);
             } catch (Exception e) {
-                Log.e("oak","print stack trace!");
+                Log.e("oak", "print stack trace!");
                 e.printStackTrace();
             }
             drawViewfinder();
