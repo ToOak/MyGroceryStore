@@ -4,12 +4,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <com.example.xushuailong.mygrocerystore.scan.scan1.CameraPreview
+    <com.wochacha.scan.CameraPreview
         android:id="@+id/preview_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-    <com.example.xushuailong.mygrocerystore.scan.scan1.ViewfinderView
+    <com.wochacha.scan.ViewfinderView
         android:id="@+id/viewfinder_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

@@ -1,4 +1,4 @@
-package com.example.xushuailong.mygrocerystore.scan.util;
+package com.wochacha.scan.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 public class ImagesManager {
-	static volatile ImagesManager instance;
 
 	public static Bitmap Rotate(Bitmap bitmap, float degrees) {
 		if (bitmap == null)
@@ -63,13 +62,4 @@ public class ImagesManager {
 		return false;
 	}
 
-	public static ImagesManager getInstance() {
-		if (instance == null) {
-			synchronized(ImagesManager.class) {
-				if (instance == null)
-					instance = new ImagesManager();
-			}
-		}
-		return instance;
-	}
 }

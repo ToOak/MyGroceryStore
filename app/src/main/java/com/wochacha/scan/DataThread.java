@@ -1,4 +1,4 @@
-package com.example.xushuailong.mygrocerystore.scan.scan1;
+package com.wochacha.scan;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;
@@ -6,17 +6,14 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-import com.example.xushuailong.mygrocerystore.scan.util.Constant;
-import com.example.xushuailong.mygrocerystore.scan.util.Constant.*;
-import com.example.xushuailong.mygrocerystore.scan.util.HardWare;
-import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant;
-import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant.*;
-import com.wochacha.scan.WccBarcode;
+import com.wochacha.scan.util.Constant;
+import com.wochacha.scan.util.Constant.*;
+import com.wochacha.scan.util.HardWare;
+import com.wochacha.scan.util.MessageConstant;
+import com.wochacha.scan.util.MessageConstant.*;
 
 @SuppressLint("HandlerLeak")
 public class DataThread extends Thread {
-    String TAG = "DataThread";
-    public static final String BARCODE_BITMAP_PATH = "barcode_bitmap";
     private Handler handler;
     private Handler Invokerhandler;
     private final WccScanApplication mContext;
@@ -27,7 +24,6 @@ public class DataThread extends Thread {
     private BarcodeDecodeThread barcodeAllThread;
     private BarcodeDecodeThread lightWatcherThread;
 
-    private int imgDecodeFailFlag;
     private int scanType = Constant.ScanType.ALL;
     private int threadNum = 0;
 
@@ -122,25 +118,10 @@ public class DataThread extends Thread {
                                 }
                                 img = null;
                                 break;
-                            case BarcodeDecodeMsg.IMAGE_DECODE://从外部获取到一张图像数据
-                                int imageWidth = msg.arg1;
-                                int imageHeight = msg.arg2;
-                                imgDecodeFailFlag = 0;
-                                removeDecodeMessages(BarcodeDecodeMsg.IMAGE_DECODE);
-                                //对于图片识别，一维码和二维码识别在一个线程里做，无所谓性能，同时可以避免多线程处理图像数据导致互相干扰的问题
-                                if (barcodeAllThread != null)
-                                    HardWare.sendMessage(barcodeAllThread.getHandler(), BarcodeDecodeMsg.IMAGE_DECODE, imageWidth, imageHeight, msg.obj);
-                                img = null;
-                                break;
                             case BarcodeDecodeMsg.DecodeFail:    //从DecodeThread发送过来的消息，表明该线程解码一帧图像失败，需要新的数据
                                 if (msg.arg1 == DecodeThread.BARCODE_THREAD) {
                                     HardWare.sendMessage(Invokerhandler, BarcodeDecodeMsg.DecodeFail);
                                 }
-                                break;
-                            case BarcodeDecodeMsg.ImageDecodeFail:
-                                imgDecodeFailFlag++;
-                                if (imgDecodeFailFlag >= threadNum)
-                                    HardWare.sendMessage(Invokerhandler, BarcodeDecodeMsg.ImageDecodeFail);
                                 break;
                             case BarcodeDecodeMsg.DecodeSuccess:
                                 HardWare.sendMessage(Invokerhandler, BarcodeDecodeMsg.DecodeSuccess, msg.arg1, msg.arg2, msg.obj);
@@ -186,7 +167,6 @@ public class DataThread extends Thread {
     private void end() {
         try {
             removeDecodeMessages(BarcodeDecodeMsg.DECODE);
-            removeDecodeMessages(BarcodeDecodeMsg.IMAGE_DECODE);
             if (barcodeThread != null)
                 HardWare.sendMessage(barcodeThread.getHandler(), BarcodeDecodeMsg.QUIT_DECODE);
             if (barcodeBlurThread != null)

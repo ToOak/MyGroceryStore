@@ -1,4 +1,4 @@
-package com.example.xushuailong.mygrocerystore.scan.scan1;
+package com.wochacha.scan;
 
 import android.graphics.Rect;
 

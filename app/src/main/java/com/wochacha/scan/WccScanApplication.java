@@ -1,8 +1,6 @@
-package com.example.xushuailong.mygrocerystore.scan.scan1;
+package com.wochacha.scan;
 
 import android.app.Application;
-
-import com.wochacha.scan.WccBarcode;
 
 /**
  * 在此处加载算法，需要使用扫描功能的Application需要继承自此类

@@ -1,4 +1,4 @@
-package com.example.xushuailong.mygrocerystore.scan.scan1;
+package com.wochacha.scan;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -21,11 +21,11 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 
-import com.example.xushuailong.mygrocerystore.scan.util.HardWare;
-import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant;
-import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant.*;
-import com.example.xushuailong.mygrocerystore.scan.util.Validator;
-import com.example.xushuailong.mygrocerystore.scan.util.WccConfigure;
+import com.wochacha.scan.util.HardWare;
+import com.wochacha.scan.util.MessageConstant;
+import com.wochacha.scan.util.MessageConstant.*;
+import com.wochacha.scan.util.Validator;
+import com.wochacha.scan.util.WccConfigure;
 import com.example.xushuailong.mygrocerystore.utils.ScreenUtil;
 
 import java.io.IOException;

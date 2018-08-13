@@ -1,11 +1,10 @@
 package com.wochacha.scan;
 
 import android.content.Context;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.example.xushuailong.mygrocerystore.scan.util.Constant;
-import com.example.xushuailong.mygrocerystore.scan.util.WccConfigure;
+import com.wochacha.scan.util.Constant;
+import com.wochacha.scan.util.WccConfigure;
 
 
 public class WccBarcode {
@@ -45,10 +44,6 @@ public class WccBarcode {
         return instance;
     }
 
-    public static WccBarcode getInstance() {
-        return instance;
-    }
-
     public static void free() {
         if (instance != null)
             instance.wccRelease();
@@ -66,7 +61,7 @@ public class WccBarcode {
         this.rotateMode = rotate;
     }
 
-    public WccResult decode(byte[] rgb, byte[] yuv, int width, int height, int mode, boolean colorOn) {
+    public WccResult decode(byte[] rgb, byte[] yuv, int width, int height, int mode) {
 
         Log.e("lalala", "decode: " + width + "\t" + height);
         try {

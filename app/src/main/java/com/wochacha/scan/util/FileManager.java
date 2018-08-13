@@ -1,20 +1,10 @@
-package com.example.xushuailong.mygrocerystore.scan.util;
+package com.wochacha.scan.util;
 
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.InputStream;
 import java.nio.CharBuffer;
-import java.security.MessageDigest;
-import java.util.Date;
-import java.util.Locale;
 
 public class FileManager {
     private static final String CacheRootEx = Environment.getExternalStorageDirectory() + "/WccJCCache/";

@@ -1,12 +1,8 @@
-package com.example.xushuailong.mygrocerystore.scan.scan1;
+package com.example.xushuailong.mygrocerystore;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,22 +15,19 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.example.xushuailong.mygrocerystore.R;
-import com.example.xushuailong.mygrocerystore.scan.util.Constant;
-import com.example.xushuailong.mygrocerystore.scan.util.Constant.*;
-import com.example.xushuailong.mygrocerystore.scan.util.HardWare;
-import com.example.xushuailong.mygrocerystore.scan.util.ImagesManager;
-import com.example.xushuailong.mygrocerystore.scan.util.JCConstant;
-import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant.*;
-import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant;
-import com.example.xushuailong.mygrocerystore.scan.util.SpUtil;
-import com.example.xushuailong.mygrocerystore.scan.util.Validator;
-import com.example.xushuailong.mygrocerystore.scan.util.WccConfigure;
-import com.wochacha.scan.WccBarcode;
+import com.wochacha.scan.DecodeThread;
+import com.wochacha.scan.ScanFragment;
 import com.wochacha.scan.WccResult;
+import com.wochacha.scan.WccScanApplication;
+import com.wochacha.scan.util.Constant;
+import com.wochacha.scan.util.Constant.*;
+import com.wochacha.scan.util.HardWare;
+import com.wochacha.scan.util.MessageConstant.*;
+import com.wochacha.scan.util.MessageConstant;
+import com.wochacha.scan.util.Validator;
+import com.wochacha.scan.util.WccConfigure;
 
 
 /**
@@ -138,13 +131,13 @@ public final class BarcodeScanActivity extends AppCompatActivity {
             case Constant.FocusType.ManualFocus:
                 WccConfigure.setCameraFocusType(this, "3");
                 break;
-            case -1:
-                if (JCConstant.AUTO_FOCUS) {
-                    WccConfigure.setCameraFocusType(this, "1");
-                } else {
-                    WccConfigure.setCameraFocusType(this, "3");
-                }
-                break;
+//            case -1:
+//                if (JCConstant.AUTO_FOCUS) {
+//                    WccConfigure.setCameraFocusType(this, "1");
+//                } else {
+//                    WccConfigure.setCameraFocusType(this, "3");
+//                }
+//                break;
         }
 
         remove(SCAN);
@@ -320,7 +313,7 @@ public final class BarcodeScanActivity extends AppCompatActivity {
      * @param length
      * @return
      */
-    static String getDataEncoding(byte[] data, int index, int length) {
+    public static String getDataEncoding(byte[] data, int index, int length) {
         if (Validator.isUtf8Data(data, index, length))
             return "UTF-8";
         else

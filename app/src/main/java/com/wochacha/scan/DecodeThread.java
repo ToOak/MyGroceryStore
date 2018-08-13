@@ -1,4 +1,4 @@
-package com.example.xushuailong.mygrocerystore.scan.scan1;
+package com.wochacha.scan;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -8,11 +8,10 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.xushuailong.mygrocerystore.scan.util.DataConverter;
-import com.example.xushuailong.mygrocerystore.scan.util.HardWare;
-import com.example.xushuailong.mygrocerystore.scan.util.ImagesManager;
-import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant;
-import com.wochacha.scan.WccResult;
+import com.wochacha.scan.util.DataConverter;
+import com.wochacha.scan.util.HardWare;
+import com.wochacha.scan.util.ImagesManager;
+import com.wochacha.scan.util.MessageConstant;
 
 public abstract class DecodeThread extends Thread {
     String TAG = "DecodeThread";
@@ -21,7 +20,6 @@ public abstract class DecodeThread extends Thread {
     protected final WccScanApplication mContext;
     protected volatile boolean quit = false;
     protected int threadType = 0;
-    protected boolean isImageScan;
 
     public static final int BARCODE_THREAD = 1;
     public static final int BLURBARCODE_THREAD = 2;
@@ -32,7 +30,6 @@ public abstract class DecodeThread extends Thread {
 
     public DecodeThread(WccScanApplication app, DataThread dataThread) {
         quit = false;
-        this.isImageScan = false;
         mContext = app;
         parent = dataThread;
     }
@@ -66,23 +63,10 @@ public abstract class DecodeThread extends Thread {
                     switch (msg.what) {
                         case MessageConstant.BarcodeDecodeMsg.DECODE:
                             Log.e("xsl", "aaaaa");
-                            isImageScan = false;
                             try {
                                 decode(msg.obj, msg.arg1, msg.arg2);
                             } catch (OutOfMemoryError oom) {
                                 removeMessages(MessageConstant.BarcodeDecodeMsg.DECODE);
-                                removeMessages(MessageConstant.BarcodeDecodeMsg.IMAGE_DECODE);
-                                oom.printStackTrace();
-                                Toast.makeText(mContext, "警告！当前系统可用内存不足...无法识别！", Toast.LENGTH_SHORT).show();
-                            }
-                            break;
-                        case MessageConstant.BarcodeDecodeMsg.IMAGE_DECODE:
-                            isImageScan = true;
-                            try {
-                                decode(msg.obj, msg.arg1, msg.arg2);
-                            } catch (OutOfMemoryError oom) {
-                                removeMessages(MessageConstant.BarcodeDecodeMsg.DECODE);
-                                removeMessages(MessageConstant.BarcodeDecodeMsg.IMAGE_DECODE);
                                 oom.printStackTrace();
                                 Toast.makeText(mContext, "警告！当前系统可用内存不足...无法识别！", Toast.LENGTH_SHORT).show();
                             }
@@ -92,7 +76,6 @@ public abstract class DecodeThread extends Thread {
                             handler = null;
                             quit = true;
                             removeMessages(MessageConstant.BarcodeDecodeMsg.DECODE);
-                            removeMessages(MessageConstant.BarcodeDecodeMsg.IMAGE_DECODE);
                             Looper.myLooper().quit();
                             break;
                     }
@@ -164,11 +147,7 @@ public abstract class DecodeThread extends Thread {
             String md5 = DataConverter.getMD5(result.getBytes());
 
             Bitmap rotated;
-            if (isImageScan)
-                rotated = ImagesManager.Rotate(bmp, 0);
-            else {
-                rotated = ImagesManager.Rotate(bmp, 90);
-            }
+            rotated = ImagesManager.Rotate(bmp, 90);
             bmpName = ImagesManager.SaveBarcodeBitmap(rotated, md5 + ".jpg");
             //todo recycle
 //            if (rotated != null)
@@ -218,14 +197,11 @@ public abstract class DecodeThread extends Thread {
         if (quit) return false;
 
         boolean success = decodeBy(data, width, height);
-        if (success == false) {
-            if (quit == false) {
-                if (isImageScan)
-                    HardWare.sendMessage(parent.getHandler(), MessageConstant.BarcodeDecodeMsg.ImageDecodeFail, threadType, 0);
-                else {
-                    if (threadType != LIGHT_THREAD) {
-                        HardWare.sendMessage(parent.getHandler(), MessageConstant.BarcodeDecodeMsg.DecodeFail, threadType, 0);
-                    }
+        if (!success) {
+            if (!quit) {
+
+                if (threadType != LIGHT_THREAD) {
+                    HardWare.sendMessage(parent.getHandler(), MessageConstant.BarcodeDecodeMsg.DecodeFail, threadType, 0);
                 }
             }
         }

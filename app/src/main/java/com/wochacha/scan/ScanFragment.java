@@ -1,9 +1,7 @@
-package com.example.xushuailong.mygrocerystore.scan.scan1;
+package com.wochacha.scan;
 
 
 import android.app.Activity;
-import android.app.Application;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,12 +14,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.xushuailong.mygrocerystore.scan.util.Constant;
-import com.example.xushuailong.mygrocerystore.scan.util.Constant.*;
-import com.example.xushuailong.mygrocerystore.scan.util.HardWare;
-import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant.*;
-import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant;
-import com.example.xushuailong.mygrocerystore.scan.util.WccConfigure;
+import com.example.xushuailong.mygrocerystore.BarcodeScanActivity;
+import com.wochacha.scan.util.Constant;
+import com.wochacha.scan.util.Constant.*;
+import com.wochacha.scan.util.HardWare;
+import com.wochacha.scan.util.MessageConstant.*;
+import com.wochacha.scan.util.MessageConstant;
+import com.wochacha.scan.util.WccConfigure;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -29,7 +28,6 @@ import java.util.TimerTask;
 import com.example.xushuailong.mygrocerystore.R;
 
 public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
-    private final String TAG = "ScanFragment";
     private ViewfinderView viewfinderView;
     private CameraPreview surfaceView;
     private boolean flashOnOff = false;
@@ -48,7 +46,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
     public static final int STOPPED = 2;
     public static int status = STOPPED;
 
-    private static enum State {
+    private enum State {
         PREVIEW, SUCCESS, DONE
     }
 
@@ -106,7 +104,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
             app.getCamera().turnOnOffFlash(false);
             flashOnOff = !flashOnOff;
         }
-        cameraManager.isReleased = true;
+        CameraManager.isReleased = true;
         cameraManager.getCamera().setPreviewCallback(null);
         app.getCamera().stopPreview();
         close();
@@ -133,12 +131,6 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
                     case MessageConstant.BarcodeDecodeMsg.CloseCamera:
                         stopPreview();
                         break;
-                    case BarcodeDecodeMsg.ColorOn:
-                        viewfinderView.setColorOnOff(true);
-                        break;
-                    case BarcodeDecodeMsg.ColorOff:
-                        viewfinderView.setColorOnOff(false);
-                        break;
                     case BarcodeDecodeMsg.FlashOff:
                         flashOnOff = true;
                         app.getCamera().turnOnOffFlash(false);
@@ -163,7 +155,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
                         }
                         break;
                     case BarcodeDecodeMsg.DecodeSuccess:
-                        if (success == true && Constant.ScanType.CONTINUOUS_ONE != scanType && ScanType.CONTINUOUS_SCHEDULE != scanType)
+                        if (success && Constant.ScanType.CONTINUOUS_ONE != scanType && ScanType.CONTINUOUS_SCHEDULE != scanType)
                             break;
                         success = true;
                         state = State.SUCCESS;
@@ -182,7 +174,7 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
                         break;
                     case BarcodeDecodeMsg.CameraNoData:
                         final String title = (String) message.obj;
-                        showDialog(title);
+//                        showDialog(title);
                         break;
                     case BarcodeDecodeMsg.RestartPreviewAndDecode:
                         restartPreviewAndDecode();
@@ -282,30 +274,27 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
         if (needPreview == false)
             return;
         try {
-//            if (HardWare.needRotateActivity())
-//                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             app.getCamera().openDriver();
         } catch (Exception e) {
             e.printStackTrace();
-            showDialog("无法打开相机？");
+//            showDialog("无法打开相机？");
             needPreview = false;
         }
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {
-        if (needPreview == false)
+        if (!needPreview)
             return;
 
         openCamera();
 
         if (captureHandler == null) {
             captureHandler = new CaptureActivityHandler();
-        }else {
         }
 
 
         boolean ret = app.getCamera().startPreview(surfaceHolder);
-        if (ret == false)
+        if (!ret)
             HardWare.sendMessage(captureHandler, BarcodeDecodeMsg.CameraNoData, "无法启动预览？");
         else
             restartPreviewAndDecode();
@@ -313,14 +302,6 @@ public class ScanFragment extends Fragment implements SurfaceHolder.Callback {
         surfaceView.setCamera(cameraManager.getCamera());
     }
 
-    private void showDialog(String title) {
-//		Intent intent = new Intent(getActivity(), PopMessageView.class);
-//    	intent.putExtra("Title", title);
-//    	intent.putExtra("Message", "<br>请检查手机中应用权限控制，允许我查查使用相机。点击<font color=\"#ff0000\">权限设置</font>, 了解手机权限设置方法<br>");
-//		intent.putExtra("PopType", "2");
-//    	startActivity(intent);
-//        HardWare.ToastShort(getActivity(), title);
-    }
 
     private class DataTimerTask extends TimerTask {
         @Override

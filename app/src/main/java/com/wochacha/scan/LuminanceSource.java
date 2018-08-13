@@ -1,4 +1,4 @@
-package com.example.xushuailong.mygrocerystore.scan.scan1;
+package com.wochacha.scan;
 
 
 public abstract class LuminanceSource {

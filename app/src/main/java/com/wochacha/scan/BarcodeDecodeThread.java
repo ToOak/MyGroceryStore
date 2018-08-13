@@ -1,15 +1,12 @@
-package com.example.xushuailong.mygrocerystore.scan.scan1;
+package com.wochacha.scan;
 
 import android.graphics.Rect;
 import android.util.Log;
 
-import com.example.xushuailong.mygrocerystore.scan.util.Constant;
-import com.example.xushuailong.mygrocerystore.scan.util.Constant.*;
-import com.example.xushuailong.mygrocerystore.scan.util.HardWare;
-import com.example.xushuailong.mygrocerystore.scan.util.MessageConstant;
-import com.example.xushuailong.mygrocerystore.scan.util.WccConfigure;
-import com.wochacha.scan.WccBarcode;
-import com.wochacha.scan.WccResult;
+import com.wochacha.scan.util.Constant;
+import com.wochacha.scan.util.Constant.*;
+import com.wochacha.scan.util.HardWare;
+import com.wochacha.scan.util.MessageConstant;
 
 public class BarcodeDecodeThread extends DecodeThread {
     public WccBarcode scanner = null; // gc_lib
@@ -22,7 +19,6 @@ public class BarcodeDecodeThread extends DecodeThread {
     private Rect rect1;
     private Rect rect2;
     private Rect rect3;
-    private boolean colorOn;
 
     public BarcodeDecodeThread(WccScanApplication app, DataThread dataThread, int type, int mode, int threadType) {
         super(app, dataThread);
@@ -60,68 +56,67 @@ public class BarcodeDecodeThread extends DecodeThread {
             int w = width;
             int h = height;
 
-            colorOn = WccConfigure.getColorMode(mContext);
 
-            if (isImageScan) {
-                if (mode != ScanMode.LIGHTWATCHER) {
-                    rgb = (byte[]) data;// 图片识别实际上是rgb数据
-                    if (hsv)
-                        BaseLuminanceSource.processData(rgb, w, h);
-                    scanner.setRoteMode(0);
+//            if (isImageScan) {
+//                if (mode != ScanMode.LIGHTWATCHER) {
+//                    rgb = (byte[]) data;// 图片识别实际上是rgb数据
+//                    if (hsv)
+//                        BaseLuminanceSource.processData(rgb, w, h);
+//                    scanner.setRoteMode(0);
+//
+//                    /**
+//                     * 从RGB获取y分量，灰度算法识别使用
+//                     */
+//                    yuv = BaseLuminanceSource.getYData(rgb, width, height);
+//                }
+//            } else {
+            yuv = (byte[]) data;
+            if (rect1 == null)
+                rect1 = new Rect((w - activeRect.bottom) & 0xfffffffe, activeRect.left & 0xfffffffe, (w - activeRect.top) & 0xfffffffe, activeRect.right & 0xfffffffe);
+            rect = rect1;
 
-                    /**
-                     * 从RGB获取y分量，灰度算法识别使用
-                     */
-                    yuv = BaseLuminanceSource.getYData(rgb, width, height);
+            int sample = 1;
+            if (mode == ScanMode.BARCODE || mode == ScanMode.BLURBARCODE) {
+                if (rect2 == null) {
+                    int rw = (rect.width() - 60) / 2;
+                    if (rw < 0) rw = 0;
+                    rect2 = new Rect((rect.left + rw) & 0xfffffffe, rect.top & 0xfffffffe, (rect.right - rw) & 0xfffffffe, rect.bottom & 0xfffffffe);
                 }
+                rect = rect2;
             } else {
-                yuv = (byte[]) data;
-                if (rect1 == null)
-                    rect1 = new Rect((w - activeRect.bottom) & 0xfffffffe, activeRect.left & 0xfffffffe, (w - activeRect.top) & 0xfffffffe, activeRect.right & 0xfffffffe);
-                rect = rect1;
-
-                int sample = 1;
-                if (mode == ScanMode.BARCODE || mode == ScanMode.BLURBARCODE) {
-                    if (rect2 == null) {
-                        int rw = (rect.width() - 60) / 2;
-                        if (rw < 0) rw = 0;
-                        rect2 = new Rect((rect.left + rw) & 0xfffffffe, rect.top & 0xfffffffe, (rect.right - rw) & 0xfffffffe, rect.bottom & 0xfffffffe);
-                    }
-                    rect = rect2;
-                } else {
-                    if (rect3 == null) {
-                        int rh = (rect.height() - rect.width()) / 2;
-                        if (rh < 0) rh = 0;
-                        rect3 = new Rect(rect.left & 0xfffffffe, (rect.top + rh) & 0xfffffffe, rect.right & 0xfffffffe, (rect.bottom - rh) & 0xfffffffe);
-                    }
-                    rect = rect3;
-                    sample = rect.width() / 200;
+                if (rect3 == null) {
+                    int rh = (rect.height() - rect.width()) / 2;
+                    if (rh < 0) rh = 0;
+                    rect3 = new Rect(rect.left & 0xfffffffe, (rect.top + rh) & 0xfffffffe, rect.right & 0xfffffffe, (rect.bottom - rh) & 0xfffffffe);
                 }
-
-                scanner.setRoteMode(1);
-                if (source == null)
-                    source = mContext.getCamera().buildLuminanceSource(yuv, w, h, rect);
-                else
-                    source.setData(yuv, w, h, rect);
-
-
-                if (mode == ScanMode.BARCODE || mode == ScanMode.BLURBARCODE) {
-                    rgb = source.getRGBMatrix(format, false);
-                    yuv = source.getMatrix();
-                } else {
-                    rgb = source.subSampleRGB(source.getRGBMatrix(format, hsv), source.getWidth(), source.getHeight(), sample);
-                }
-
-
-                if (sample > 1) {
-                    w = (source.getWidth() / sample) & 0xfffffffe;
-                    h = (source.getHeight() / sample) & 0xfffffffe;
-                } else {
-                    w = source.getWidth();
-                    h = source.getHeight();
-                }
-                Log.e("lalala", "sample: " + w + "\t" + h + "\t" + sample);
+                rect = rect3;
+                sample = rect.width() / 200;
             }
+
+            scanner.setRoteMode(1);
+            if (source == null)
+                source = mContext.getCamera().buildLuminanceSource(yuv, w, h, rect);
+            else
+                source.setData(yuv, w, h, rect);
+
+
+            if (mode == ScanMode.BARCODE || mode == ScanMode.BLURBARCODE) {
+                rgb = source.getRGBMatrix(format, false);
+                yuv = source.getMatrix();
+            } else {
+                rgb = source.subSampleRGB(source.getRGBMatrix(format, hsv), source.getWidth(), source.getHeight(), sample);
+            }
+
+
+            if (sample > 1) {
+                w = (source.getWidth() / sample) & 0xfffffffe;
+                h = (source.getHeight() / sample) & 0xfffffffe;
+            } else {
+                w = source.getWidth();
+                h = source.getHeight();
+            }
+            Log.e("lalala", "sample: " + w + "\t" + h + "\t" + sample);
+//            }
 
             //上面预处理后得到的是YUV格式的Y分量图像数据
 
@@ -133,7 +128,7 @@ public class BarcodeDecodeThread extends DecodeThread {
 //					HardWare.sendMessage(parent.getHandler(), BarcodeDecodeMsg.FlashOnRemind);
 //				}
             } else {
-                rawResult_gc = scanner.decode(rgb, yuv, w, h, mode, colorOn);
+                rawResult_gc = scanner.decode(rgb, yuv, w, h, mode);
             }
 
             // 弹对话框
@@ -208,13 +203,13 @@ public class BarcodeDecodeThread extends DecodeThread {
     protected boolean decodeBy(Object data, int width, int height) {
         try {
             boolean result;
-            if (isImageScan) {
-                //对于图片识别，一维码和二维码识别在一个线程里做，无所谓性能，同时可以避免多线程处理图像数据导致互相干扰的问题
-                result = decodeByGClib(data, width, height, ScanMode.ALLCODE, false);
-                if (result == false) {
-                    result = decodeByGClib(data, width, height, ScanMode.ALLCODE, true);
-                }
-            } else {
+//            if (isImageScan) {
+//                //对于图片识别，一维码和二维码识别在一个线程里做，无所谓性能，同时可以避免多线程处理图像数据导致互相干扰的问题
+//                result = decodeByGClib(data, width, height, ScanMode.ALLCODE, false);
+//                if (result == false) {
+//                    result = decodeByGClib(data, width, height, ScanMode.ALLCODE, true);
+//                }
+//            } else {
                 num++;
                 boolean hsv;
                 if (num % 6 == 0)
@@ -222,7 +217,7 @@ public class BarcodeDecodeThread extends DecodeThread {
                 else
                     hsv = false;
                 result = decodeByGClib(data, width, height, scanMode, hsv);
-            }
+//            }
 
             return result;
         } catch (OutOfMemoryError oom) {

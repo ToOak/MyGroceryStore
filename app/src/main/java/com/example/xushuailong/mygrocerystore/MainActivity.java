@@ -6,8 +6,7 @@ import android.view.View;
 import com.example.xushuailong.mygrocerystore.base.BaseActivity;
 import com.example.xushuailong.mygrocerystore.bean.User;
 import com.example.xushuailong.mygrocerystore.databinding.ActivityMainBinding;
-import com.example.xushuailong.mygrocerystore.scan.scan1.BarcodeScanActivity;
-import com.example.xushuailong.mygrocerystore.scan.util.Constant;
+import com.wochacha.scan.util.Constant;
 import com.example.xushuailong.mygrocerystore.utils.LogUtil;
 
 
