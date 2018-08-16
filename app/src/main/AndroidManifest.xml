@@ -29,7 +29,7 @@
 
 
         <activity
-            android:name=".BarcodeScanActivity"
+            android:name="com.wochacha.scan.BarcodeScanActivity"
             android:configChanges="keyboardHidden|orientation|locale|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

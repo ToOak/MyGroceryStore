@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.xushuailong.mygrocerystore.BarcodeScanActivity;
 import com.wochacha.scan.util.Constant;
 import com.wochacha.scan.util.Constant.*;
 import com.wochacha.scan.util.HardWare;

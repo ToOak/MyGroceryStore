@@ -1,8 +1,6 @@
 package com.wochacha.scan;
 
 
-import com.example.xushuailong.mygrocerystore.BarcodeScanActivity;
-
 import java.io.UnsupportedEncodingException;
 
 

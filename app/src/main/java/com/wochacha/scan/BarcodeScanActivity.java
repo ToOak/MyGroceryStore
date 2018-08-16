@@ -1,4 +1,4 @@
-package com.example.xushuailong.mygrocerystore;
+package com.wochacha.scan;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,10 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.wochacha.scan.DecodeThread;
-import com.wochacha.scan.ScanFragment;
-import com.wochacha.scan.WccResult;
-import com.wochacha.scan.WccScanApplication;
+import com.example.xushuailong.mygrocerystore.R;
 import com.wochacha.scan.util.Constant;
 import com.wochacha.scan.util.Constant.*;
 import com.wochacha.scan.util.HardWare;
