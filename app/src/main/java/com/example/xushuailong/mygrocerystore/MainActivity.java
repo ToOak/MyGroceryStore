@@ -10,6 +10,8 @@ import com.wochacha.scan.BarcodeScanActivity;
 import com.wochacha.scan.util.Constant;
 import com.example.xushuailong.mygrocerystore.utils.LogUtil;
 
+import cn.finalteam.sample.MainGActivity;
+
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
@@ -49,10 +51,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             @Override
             public void onClick(View v) {
                 dataBinding.setUser(null);
-                Intent intent = new Intent(MainActivity.this, BarcodeScanActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("ScanType", Constant.ScanType.ALL);
-                intent.putExtra(BarcodeScanActivity.KEY_FOCUS_TYPE,Constant.FocusType.AutoFocus);
+//                Intent intent = new Intent(MainActivity.this, BarcodeScanActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                intent.putExtra("ScanType", Constant.ScanType.ALL);
+//                intent.putExtra(BarcodeScanActivity.KEY_FOCUS_TYPE,Constant.FocusType.AutoFocus);
+//                startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, MainGActivity.class);
                 startActivity(intent);
             }
         });
