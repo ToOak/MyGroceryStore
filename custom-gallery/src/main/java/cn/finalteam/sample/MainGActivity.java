@@ -30,8 +30,8 @@ import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.PauseOnScrollListener;
 import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
-import cn.finalteam.galleryfinal.sample.listener.GlidePauseOnScrollListener;
 import cn.finalteam.galleryfinal.widget.HorizontalListView;
+import cn.finalteam.sample.listener.GlidePauseOnScrollListener;
 import cn.finalteam.sample.listener.PicassoPauseOnScrollListener;
 import cn.finalteam.sample.listener.UILPauseOnScrollListener;
 import cn.finalteam.sample.loader.FrescoImageLoader;
@@ -373,7 +373,8 @@ public class MainGActivity extends AppCompatActivity {
                         .setNoAnimcation(mCbNoAnimation.isChecked())
                         .build();
                 GalleryFinal.init(coreConfig);
-
+                setTheme(R.style.ActionSheetStyleiOS7);
+//                setTheme(R.style.ActionSheetStyleiOS6);
                 ActionSheet.createBuilder(MainGActivity.this, getSupportFragmentManager())
                         .setCancelButtonTitle("取消(Cancel)")
                         .setOtherButtonTitles("打开相册(Open Gallery)", "拍照(Camera)", "裁剪(Crop)", "编辑(Edit)")

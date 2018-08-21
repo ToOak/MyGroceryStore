@@ -49,5 +49,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
-    implementation 'com.baoyz.actionsheet:library:1.1.4'
+//    implementation 'com.baoyz.actionsheet:library:1.1.4'
 }

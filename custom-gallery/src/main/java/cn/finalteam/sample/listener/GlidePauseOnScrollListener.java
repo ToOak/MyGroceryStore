@@ -1,4 +1,4 @@
-package cn.finalteam.galleryfinal.sample.listener;
+package cn.finalteam.sample.listener;
 
 import com.bumptech.glide.Glide;
 
