@@ -25,9 +25,13 @@
         <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
         >
-        <include layout="@layout/content_main" />
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/content_main" />
     </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -66,7 +66,7 @@ public class MainGActivity extends AppCompatActivity {
     RadioButton mRbUil;
     @BindView(R2.id.rb_glide)
     RadioButton mRbGlide;
-//    @BindView(R2.id.rb_picasso)
+    //    @BindView(R2.id.rb_picasso)
 //    RadioButton mRbPicasso;
     @BindView(R2.id.rb_single_select)
     RadioButton mRbSingleSelect;
@@ -74,7 +74,7 @@ public class MainGActivity extends AppCompatActivity {
     RadioButton mRbMutiSelect;
     @BindView(R2.id.et_max_size)
     EditText mEtMaxSize;
-//    @BindView(R2.id.btn_open_gallery)
+    //    @BindView(R2.id.btn_open_gallery)
 //    Button mBtnOpenGallery;
     @BindView(R2.id.lv_photo)
     HorizontalListView mLvPhoto;
@@ -126,7 +126,7 @@ public class MainGActivity extends AppCompatActivity {
     CheckBox mCbOpenForceCropEdit;
     @BindView(R2.id.ll_force_crop)
     LinearLayout mLlForceCrop;
-//    @BindView(R2.id.toolbar)
+    //    @BindView(R2.id.toolbar)
 //    Toolbar mToolbar;
     @BindView(R2.id.rb_fresco)
     RadioButton mRbFresco;
@@ -145,7 +145,6 @@ public class MainGActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_g_main);
         ButterKnife.bind(this);
-
 
 
 //        mRbUil = findViewById(R.id.rb_uil);
@@ -269,7 +268,7 @@ public class MainGActivity extends AppCompatActivity {
                 } else if (mRbThemeTeal.isChecked()) {
                     themeConfig = ThemeConfig.TEAL;
                 } else if (mRbThemeCustom.isChecked()) {
-                    ThemeConfig theme = new ThemeConfig.Builder()
+                    themeConfig = new ThemeConfig.Builder()
                             .setTitleBarBgColor(Color.rgb(0xFF, 0x57, 0x22))
                             .setTitleBarTextColor(Color.BLACK)
                             .setTitleBarIconColor(Color.BLACK)
@@ -282,7 +281,6 @@ public class MainGActivity extends AppCompatActivity {
                             .setIconCrop(R.mipmap.ic_action_crop)
                             .setIconCamera(R.mipmap.ic_action_camera)
                             .build();
-                    themeConfig = theme;
                 }
 
                 FunctionConfig.Builder functionConfigBuilder = new FunctionConfig.Builder();
