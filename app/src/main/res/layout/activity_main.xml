@@ -141,5 +141,29 @@
                 android:text='@{String.valueOf(user.age)+" years old"}'
                 android:textColor="@{user.age &lt; 14 || user.age &gt; 65?0xffff0000:0xff000000}" />
         </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.example.xushuailong.mygrocerystore.widget.JustifyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="38dp"
+                    android:layout_marginRight="38dp"
+                    android:layout_marginTop="50dp"
+                    android:lineSpacingExtra="2dp"
+                    android:paddingBottom="50dp"
+                    android:text="Design Support Library是在Google I/O 2015上发布的一个全新兼容函数库，它使得开发者可以在Android2.1（API = 7）及以上的设备中实现Material Design效果，这个函数库提供了一系列的控件，主要包括：Snackbar,Navigation View、FloatActionButton、CoordinatorLayout、CollapsingToolbarLayout等。\n\nSnackbar提供了一个介于Toast和AlertDialog之间轻量级控件，它可以很方便的提供消息的提示和动作反馈。 \n\nTextInputLayout的主要作用是作为EditText的容器，从而为EditText默认生成一个浮动的Label，当用户点击EditText之后，EditText中设置的hint字符串会自动移动到EditText的左上角。TextInputLayout的使用很简单，语句如下，将它作为EditText的父容器即可。同时，如果给EditText增加监听，还可以给它增加更多的floating label。\n\nTablayout控件用于在应用中轻松添加Tab分组功能，总共有两种类型可供选择。\n\nNavigationView在MD设计中非常重要，之前Google也提出了使用DrawerLayout来实现导航抽屉。这次，在support library中，Google提供了NavigationView来实现导航菜单界面\n\nfloating action button 是一个负责显示界面基本操作的圆形按钮。Design library中的FloatingActionButton 实现了一个默认颜色为主题中colorAccent的悬浮操作按钮，"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </ScrollView>
     </LinearLayout>
 </layout>

@@ -9,7 +9,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-public class JustifyTextView extends TextView {
+public class JustifyTextView extends android.support.v7.widget.AppCompatTextView {
 
     private int mLineY;
     private int mViewWidth;
@@ -101,6 +101,14 @@ public class JustifyTextView extends TextView {
         return line.length() > 3 && line.charAt(0) == ' '
                 && line.charAt(1) == ' ';
     }
+
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+////        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
+//                MeasureSpec.AT_MOST);
+//        super.onMeasure(widthMeasureSpec, expandSpec);
+//    }
 
     private boolean needScale(String line) {
         if (line == null || line.length() == 0) {
