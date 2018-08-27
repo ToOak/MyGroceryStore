@@ -21,7 +21,7 @@ import com.example.xushuailong.mygrocerystore.utils.LogUtil;
  * Created by xushuailong on 2018/2/2.
  */
 
-public abstract class BaseActivity<B extends ViewDataBinding> extends Activity {
+public abstract class BaseActivity<B extends ViewDataBinding> extends FragmentActivity {
 
     /**
      * 通用初始化View布局
