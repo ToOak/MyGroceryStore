@@ -39,3 +39,5 @@
     <permission>  <permission-group>    <permission-tree>
     <provider>    <receiver>  <service>  <uses-configuration>
     <uses-library>  <uses-permission>  <uses-sdk>
+
+14、tv_live.setMovementMethod(new ScrollingMovementMethod());
