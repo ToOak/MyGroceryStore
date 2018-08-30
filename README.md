@@ -26,3 +26,16 @@
     Handler用于处理消息，HandlerThread用于使用一个消息循环启动一个线程；
 8、onPause()是唯一一个在进程被杀死之前必然会调用的方法，onStop()和onDestroy()有可能不被执行。
 9、onSaveInstanceState：Android在activity有可能被销毁之前（即onPause()调用之前）会调用此方法
+
+10、ContentResolver.openInputStream();
+11、<activity-alias>;
+12、 <grant-uri-permission />;
+
+13、<action>  <activity>
+    <activity-alias>  <application>
+    <category>  <data>  <grant-uri-permission>
+    <instrumentation>  <intent-filter>
+    <manifest>  <meta-data>
+    <permission>  <permission-group>    <permission-tree>
+    <provider>    <receiver>  <service>  <uses-configuration>
+    <uses-library>  <uses-permission>  <uses-sdk>
