@@ -1,12 +1,17 @@
 package com.example.xushuailong.mygrocerystore.fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.xushuailong.mygrocerystore.R;
 import com.example.xushuailong.mygrocerystore.base.BaseFragment;
@@ -19,6 +24,7 @@ public class Tab1Fragment extends BaseFragment {
     private int position;
     private EditText pwd_et;
     private TextInputLayout pwd_til;
+    private Spinner spinner;
 
     public static final String CURRENT_POSITION = "current_position";
 
@@ -69,10 +75,10 @@ public class Tab1Fragment extends BaseFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(s) && s.length() > 4){
+                if (!TextUtils.isEmpty(s) && s.length() > 4) {
                     pwd_til.setError("Password error");
                     pwd_til.setErrorEnabled(true);
-                }else {
+                } else {
                     pwd_til.setErrorEnabled(false);
                 }
             }
@@ -80,6 +86,29 @@ public class Tab1Fragment extends BaseFragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        spinner = rootView.findViewById(R.id.spinner);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+                context, android.R.layout.simple_list_item_1,
+                new String[]{"金星", "木星", "水星", "火星", "土星", "地球"}
+        );
+//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Snackbar.make(spinner, position + " " + id + " " + parent.getSelectedItem(), Snackbar.LENGTH_SHORT).show();
+            }
+
+            /**
+             * 当我们的adapter为空的时候就会调用到这个方法
+             * @param parent parent
+             */
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Snackbar.make(spinner, " " + parent.getSelectedItem(), Snackbar.LENGTH_SHORT).show();
             }
         });
     }

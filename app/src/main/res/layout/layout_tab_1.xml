@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:text="layout_tab_1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</android.support.constraint.ConstraintLayout>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:prompt="@string/all_photo"
+        android:spinnerMode="dialog">
+
+    </Spinner>
+    <!--android:switchPadding="10dp"-->
+    <!--android:textOff="关"-->
+    <!--android:textOn="开"-->
+    <!--android:thumbTextPadding="10dp" -->
+    <!--android:track="@drawable/icon_scan_flash_off"-->
+    <!--android:thumb="@drawable/ic_gf_camera"-->
+</LinearLayout>
