@@ -14,7 +14,7 @@
         <!--中部扫描框的上下边距-->
         <attr name="cameraPaddingY" format="dimension" />
         <!--中部扫描框的高度-->
-        <attr name="cameraHeight" format="dimension"/>
+        <attr name="cameraHeight" format="dimension" />
     </declare-styleable>
 
     <!-- 商品损坏原因 -->
@@ -25,5 +25,11 @@
         <item>商品意外遗失</item>
         <item>其它</item>
     </string-array>
+
+
+    <declare-styleable name="SignatureView">
+        <attr name="paint_color" format="color" />
+        <attr name="stroke_width" format="dimension" />
+    </declare-styleable>
 
 </resources>
