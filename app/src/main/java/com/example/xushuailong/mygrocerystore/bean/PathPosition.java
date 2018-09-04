@@ -9,6 +9,9 @@ public class PathPosition implements Parcelable {
     public float nextX;
     public float nextY;
 
+    public PathPosition() {
+    }
+
     protected PathPosition(Parcel in) {
         firstX = in.readFloat();
         firstY = in.readFloat();
