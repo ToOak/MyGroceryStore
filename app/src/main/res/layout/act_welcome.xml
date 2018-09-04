@@ -20,19 +20,16 @@
     <!--app:layout_constraintBaseline_toBaselineOf="parent"-->
     <ImageView
         android:id="@+id/rock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:src="@drawable/rock"
+        style="@style/myRockStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/play"
-        android:text="播放动画"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="播放动画"
         app:layout_constraintBottom_toTopOf="@id/rock" />
     <!--app:layout_constraintGuide_percent="0"-->
 </android.support.constraint.ConstraintLayout>

@@ -18,6 +18,13 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
+    <style name="myRockStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:src">@drawable/rock</item>
+    </style>
+
 
     <!--Theme for Activity with FullScreen. -->
     <style name="FullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
