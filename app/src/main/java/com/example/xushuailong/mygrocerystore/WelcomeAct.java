@@ -12,8 +12,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.xushuailong.mygrocerystore.animation.SwingAnimation;
 
 public class WelcomeAct extends AppCompatActivity {
     private TextView tvTimecount;
@@ -26,6 +30,9 @@ public class WelcomeAct extends AppCompatActivity {
     private Drawable[] drawables;//图片集合
     private Thread mThread;//线程
     private boolean mThreadFlag = true;//线程结束标志符
+    private ImageView rockImg;
+    private Button playBtn;
+    private SwingAnimation swingAnimation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +85,8 @@ public class WelcomeAct extends AppCompatActivity {
     private void initView() {
         tvTimecount = findViewById(R.id.tv_advert);
         imgAdvertise = findViewById(R.id.iv_advetise);
+        rockImg = findViewById(R.id.rock);
+        playBtn = findViewById(R.id.play);
         //填充图片
         drawables = new Drawable[ids.length];
         for (int i = 0; i < ids.length; i++) {
@@ -109,6 +118,22 @@ public class WelcomeAct extends AppCompatActivity {
         //开启线程，改变transition,切换图片
         mThread = new Thread(new MyRunnable());
         mThread.start();
+        swingAnimation = new SwingAnimation(
+                0f, 60f, -60f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f
+        );
+        swingAnimation.setDuration(4000);
+        swingAnimation.setRepeatCount(Animation.INFINITE);
+//        swingAnimation.setStartOffset(500);
+
+        playBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rockImg.startAnimation(swingAnimation);
+            }
+        });
+
     }
 
     private void initEvent() {

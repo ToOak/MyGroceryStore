@@ -3,13 +3,16 @@ package com.example.xushuailong.mygrocerystore.fragment;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.xushuailong.mygrocerystore.R;
 import com.example.xushuailong.mygrocerystore.base.BaseFragment;
+import com.example.xushuailong.mygrocerystore.utils.LogUtil;
 import com.example.xushuailong.mygrocerystore.widget.CircleAnimationView;
 
 public class Tab1Fragment extends BaseFragment implements View.OnClickListener {
@@ -132,9 +136,40 @@ public class Tab1Fragment extends BaseFragment implements View.OnClickListener {
 
         img = rootView.findViewById(R.id.img);
         img.setAlpha(.0f);
-        alphaAnimation = new AlphaAnimation(.0f, 1.0f);
-        alphaAnimation.setDuration(3000);
+        alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
+
+        //设置动画持续时长
+        alphaAnimation.setDuration(1000);
+        //设置动画结束之后的状态是否是动画的最终状态，true，表示是保持动画结束时的最终状态
         alphaAnimation.setFillAfter(true);
+        //设置动画结束之后的状态是否是动画开始时的状态，true，表示是保持动画开始时的状态
+        alphaAnimation.setFillBefore(true);
+        //设置动画的重复模式：反转REVERSE和重新开始RESTART
+        alphaAnimation.setRepeatMode(AlphaAnimation.REVERSE);
+        //设置动画播放次数
+        alphaAnimation.setRepeatCount(AlphaAnimation.INFINITE);
+//        //开始动画
+//        mIvImg.startAnimation(alphaAnimation);
+//        //清除动画
+//        mIvImg.clearAnimation();
+//        //同样cancel()也能取消掉动画
+//        alphaAnimation.cancel();
+        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                LogUtil.e("onAlphaAnimationStart");
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                LogUtil.e("onAlphaAnimationEnd");
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                LogUtil.e("onAlphaAnimationRepeat");
+            }
+        });
         rootView.findViewById(R.id.pre).setOnClickListener(this);
         rootView.findViewById(R.id.next).setOnClickListener(this);
 
@@ -152,14 +187,17 @@ public class Tab1Fragment extends BaseFragment implements View.OnClickListener {
                 mCircle.refresh();
                 break;
             }
-            case R.id.pre:{
-                img.setImageResource(R.drawable.dog1);
+            case R.id.pre: {
+//                img.setImageResource(R.drawable.dog1);
                 img.setAlpha(1.0f);
-                img.setAnimation(alphaAnimation);
-                alphaAnimation.start();
+                img.startAnimation(alphaAnimation);
+//                img.setAnimation(alphaAnimation);
+                LogUtil.e("animation" + img.getAnimation());
+//                alphaAnimation.start();
                 break;
             }
-            case R.id.next:{
+            case R.id.next: {
+                alphaAnimation.cancel();
                 Drawable[] drawables = {
                         getResources().getDrawable(R.drawable.dog1),
                         getResources().getDrawable(R.drawable.dog2)
