@@ -41,3 +41,6 @@
     <uses-library>  <uses-permission>  <uses-sdk>
 
 14、tv_live.setMovementMethod(new ScrollingMovementMethod());
+
+
+15、LeakCanary；dagger；otto android；eventBus；PermissionsDispatcher;
