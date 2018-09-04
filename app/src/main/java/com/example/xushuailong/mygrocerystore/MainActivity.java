@@ -10,6 +10,8 @@ import com.example.xushuailong.mygrocerystore.utils.LogUtil;
 
 import cn.finalteam.sample.MainGActivity;
 
+//import static com.example.xushuailong.mygrocerystore.bean.User.a;
+
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
@@ -35,6 +37,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             @Override
             public void onClick(View v) {
                 User user = new User("张君宝", "张三丰", true, 16);
+//                LogUtil.e("user a: " + user.a);
                 dataBinding.setUser(user);
             }
         });
